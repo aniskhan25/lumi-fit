@@ -10,11 +10,11 @@ Let:
 
 At the selected concurrent operating point, define throughput as:
 
-$$
+\[
 \theta_{in,m}
 =
 \frac{N_{in,m}}{10^6 g_mT_m}
-$$
+\]
 
 $$
 \theta_{out,m}
