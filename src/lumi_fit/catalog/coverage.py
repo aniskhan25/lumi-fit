@@ -1,4 +1,4 @@
-"""Catalog coverage reporting against versioned Phase 4A targets."""
+"""Catalog coverage reporting against versioned coverage targets."""
 
 from __future__ import annotations
 

@@ -86,7 +86,7 @@ def test_four_gcds_returns_a_result_per_cataloged_coding_model() -> None:
     )
 
 
-def test_selector_applies_phase4a_metadata_filters() -> None:
+def test_selector_applies_model_metadata_filters() -> None:
     catalogs, _, _, _ = inputs()
 
     selected = select_models(

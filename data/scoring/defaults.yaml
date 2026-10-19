@@ -5,8 +5,8 @@ metadata:
   valid_from: 2026-08-10
   last_verified_at: 2026-08-10T00:00:00+03:00
   sources:
-    - title: lumi-fit architecture and implementation plan
-      path: docs/implementation-plan.md
+    - title: Legacy compatibility scoring profiles
+      path: data/scoring/defaults.yaml
 profiles:
   - profile_id: balanced
     description: Legacy compatibility profile; ignored by LUMI-vLLM fit v1.

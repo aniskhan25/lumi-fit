@@ -58,8 +58,7 @@ lumi-fit plan Qwen/Qwen3-32B \
 lumi-fit explain recommendation.json --plan <plan-id>
 ```
 
-Run `lumi-fit --help` or see [docs/cli.md](docs/cli.md) for all commands,
-filters, and export formats.
+Run `lumi-fit --help` for all commands, filters, and export formats.
 
 ## Development
 

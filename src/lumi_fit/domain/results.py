@@ -143,7 +143,7 @@ class FitEligibilityStatus(StrEnum):
     ELIGIBLE = "eligible"
     INELIGIBLE = "ineligible"
     UNKNOWN = "unknown"
-    # Retained only so bundles written before ADR 0007's status clarification load.
+    # Retained so bundles written before the status clarification still load.
     UNSCORED = "unscored"
 
 

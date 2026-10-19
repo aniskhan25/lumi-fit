@@ -6,7 +6,7 @@ from lumi_fit.catalog.validation import load_default_catalogs
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_phase4a_catalog_meets_versioned_coverage_targets() -> None:
+def test_catalog_meets_versioned_coverage_targets() -> None:
     catalogs = load_default_catalogs(ROOT)
 
     report = build_model_coverage_report(catalogs.models, catalogs.model_coverage)

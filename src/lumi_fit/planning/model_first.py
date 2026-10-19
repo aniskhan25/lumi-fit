@@ -358,8 +358,8 @@ def build_model_first_bundle(
         comparisons=(),
         search_complete=True,
         search_notes=(
-            "Phase 1 enumerates power-of-two tensor parallelism with one replica.",
-            "Phase 4B capacity envelopes use bounded memory-safe searches.",
+            "The planner enumerates power-of-two tensor parallelism with one replica.",
+            "Capacity envelopes use bounded memory-safe searches.",
             "Performance capacity remains unknown without comparable evidence.",
             "Task quality and LUMI-vLLM fit are separate facts; no weighted composite is used.",
             "Numeric fit requires an exact workload, SLO, demand, and measured goodput LCB.",

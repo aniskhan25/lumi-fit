@@ -484,11 +484,11 @@ def build_resource_first_bundle(
         comparisons=(),
         search_complete=True,
         search_notes=(
-            "Phase 2 searches tensor-parallel and replica layouts inside a fixed allocation.",
+            "The planner searches tensor-parallel and replica layouts inside a fixed allocation.",
             "Best-for-model ranking prioritizes feasibility, fit band, allocation use, "
             "replica count, then conservative HBM use.",
             "Task-quality scores remain null unless comparable evaluation evidence exists.",
-            "Phase 4B capacity envelopes use bounded memory-safe searches.",
+            "Capacity envelopes use bounded memory-safe searches.",
             "Performance capacity remains unknown without comparable evidence.",
             "Task quality and LUMI-vLLM fit are separate facts; no weighted composite is used.",
             "Numeric fit requires an exact workload, SLO, demand, and measured goodput LCB.",

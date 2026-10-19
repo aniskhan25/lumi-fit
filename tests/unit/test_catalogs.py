@@ -60,7 +60,7 @@ def test_scoring_profiles_sum_to_one() -> None:
     }
 
 
-def test_phase4a_model_catalog_contains_representative_verified_artifacts() -> None:
+def test_model_catalog_contains_representative_verified_artifacts() -> None:
     models = load_default_catalogs(ROOT).models
 
     assert {model.model_id for model in models.models} == {

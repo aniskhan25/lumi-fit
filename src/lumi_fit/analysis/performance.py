@@ -1,6 +1,6 @@
 """Transparent analytical serving-capacity priors.
 
-These estimates are deliberately heuristic. They provide a stable Phase 3
+These estimates are deliberately heuristic. They provide a stable analytical
 ranking signal and must be replaced by calibrated benchmark evidence before
 being interpreted as an SLA.
 """
