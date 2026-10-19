@@ -7,7 +7,3 @@ __pycache__/
 *.egg-info/
 build/
 dist/
-
-# Private local design and development notes.
-docs/
-tests/

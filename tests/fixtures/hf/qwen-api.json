@@ -1,0 +1,17 @@
+{
+  "id": "Qwen/Qwen3-8B",
+  "sha": "b968826d9c46dd6066d109eabc6255188de91218",
+  "createdAt": "2025-04-27T03:42:21.000Z",
+  "gated": false,
+  "pipeline_tag": "text-generation",
+  "tags": [
+    "text-generation",
+    "conversational",
+    "license:apache-2.0"
+  ],
+  "safetensors": {
+    "parameters": {"BF16": 8190735360},
+    "total": 8190735360
+  }
+}
+
