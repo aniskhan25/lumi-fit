@@ -11,7 +11,7 @@ from decimal import Decimal
 from enum import StrEnum
 from typing import Any
 
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, model_validator
 
 from .base import ContractModel
 

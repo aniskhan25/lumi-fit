@@ -11,7 +11,6 @@ from lumi_fit.planning.model_first import (
     generate_model_first_candidates,
 )
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -141,8 +140,7 @@ def test_context_above_model_limit_is_infeasible() -> None:
 
     assert candidates
     assert all(
-        candidate.analysis.feasibility is FeasibilityStatus.INFEASIBLE
-        for candidate in candidates
+        candidate.analysis.feasibility is FeasibilityStatus.INFEASIBLE for candidate in candidates
     )
 
 

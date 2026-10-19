@@ -120,9 +120,12 @@ class ArtifactRecord(ContractModel):
     def validate_size(self) -> ArtifactRecord:
         if self.shard_bytes and any(size < 1 for size in self.shard_bytes):
             raise ValueError("artifact shard sizes must be positive")
-        if self.total_bytes is not None and self.shard_bytes:
-            if sum(self.shard_bytes) != self.total_bytes:
-                raise ValueError("artifact shard sizes must sum to total_bytes")
+        if (
+            self.total_bytes is not None
+            and self.shard_bytes
+            and sum(self.shard_bytes) != self.total_bytes
+        ):
+            raise ValueError("artifact shard sizes must sum to total_bytes")
         return self
 
 

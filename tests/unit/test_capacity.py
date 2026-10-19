@@ -5,7 +5,6 @@ from lumi_fit.catalog.validation import load_default_catalogs
 from lumi_fit.domain.requests import ServingRequirements
 from lumi_fit.planning.model_first import build_model_first_bundle
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -55,9 +54,7 @@ def test_concurrency_binary_search_persists_the_first_unsafe_boundary() -> None:
         (point.context_tokens, point.total_concurrent_sequences): point
         for point in envelope.evaluated_points
     }
-    first_unsafe = probes[
-        (maximum.context_tokens, maximum.total_concurrent_sequences + 1)
-    ]
+    first_unsafe = probes[(maximum.context_tokens, maximum.total_concurrent_sequences + 1)]
 
     assert maximum.memory_safe
     assert not first_unsafe.memory_safe
@@ -73,9 +70,7 @@ def test_context_binary_search_persists_the_first_unsafe_boundary() -> None:
         (point.context_tokens, point.total_concurrent_sequences): point
         for point in envelope.evaluated_points
     }
-    first_unsafe = probes[
-        (maximum.context_tokens + 1, maximum.total_concurrent_sequences)
-    ]
+    first_unsafe = probes[(maximum.context_tokens + 1, maximum.total_concurrent_sequences)]
 
     assert maximum.memory_safe
     assert not first_unsafe.memory_safe
@@ -97,8 +92,7 @@ def test_evaluated_capacity_points_are_monotonic_on_each_search_axis() -> None:
         (
             point
             for point in envelope.evaluated_points
-            if point.total_concurrent_sequences
-            == envelope.requested.total_concurrent_sequences
+            if point.total_concurrent_sequences == envelope.requested.total_concurrent_sequences
         ),
         key=lambda point: point.context_tokens,
     )
@@ -112,9 +106,7 @@ def test_capacity_envelopes_reference_existing_lower_and_higher_neighbors() -> N
     bundle = _bundle()
     recommended = _recommended(bundle)
     throughput = next(
-        candidate
-        for candidate in bundle.candidates
-        if "throughput-optimized" in candidate.tiers
+        candidate for candidate in bundle.candidates if "throughput-optimized" in candidate.tiers
     )
     assert recommended.capacity_envelope is not None
     assert throughput.capacity_envelope is not None

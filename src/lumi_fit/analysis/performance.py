@@ -8,7 +8,7 @@ being interpreted as an SLA.
 from __future__ import annotations
 
 import math
-from decimal import Decimal, ROUND_CEILING
+from decimal import ROUND_CEILING, Decimal
 
 from lumi_fit.domain.models import ArtifactRecord, ModelRecord
 from lumi_fit.domain.plans import ServingPlan

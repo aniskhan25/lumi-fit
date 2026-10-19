@@ -5,7 +5,6 @@ from lumi_fit.analysis.billing import calculate_gpu_billing
 from lumi_fit.catalog.validation import load_default_catalogs
 from lumi_fit.domain.units import Duration, MemoryAmount
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -83,4 +82,3 @@ def test_subnode_duration_preserves_fractional_hours() -> None:
     )
 
     assert result.total_gpu_hours == Decimal("0.25")
-

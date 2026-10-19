@@ -43,4 +43,3 @@ def test_fixed_count_normalizes_to_range() -> None:
 def test_count_range_rejects_reversed_bounds() -> None:
     with pytest.raises(ValidationError, match="maximum count"):
         CountRange(minimum=8, maximum=4)
-

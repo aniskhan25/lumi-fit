@@ -20,8 +20,8 @@ from .coverage import build_model_coverage_report
 from .loader import (
     load_billing,
     load_hardware,
-    load_models,
     load_model_coverage,
+    load_models,
     load_partitions,
     load_runtime,
     load_scoring,

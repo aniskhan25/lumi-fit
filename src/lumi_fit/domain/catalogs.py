@@ -140,9 +140,11 @@ class BillingRule(ContractModel):
 
     @model_validator(mode="after")
     def validate_rule_fields(self) -> BillingRule:
-        if self.type is BillingRuleType.FULL_NODE_GPU:
-            if self.billed_gpu_hours_per_node_hour is None:
-                raise ValueError("full-node rule requires billed_gpu_hours_per_node_hour")
+        if (
+            self.type is BillingRuleType.FULL_NODE_GPU
+            and self.billed_gpu_hours_per_node_hour is None
+        ):
+            raise ValueError("full-node rule requires billed_gpu_hours_per_node_hour")
         if self.type is BillingRuleType.SUBNODE_GPU:
             required = (
                 self.billed_gpu_hours_per_gcd_hour,

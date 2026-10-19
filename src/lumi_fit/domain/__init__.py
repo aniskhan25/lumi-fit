@@ -7,9 +7,9 @@ from .catalogs import (
     RuntimeCatalog,
     ScoringCatalog,
 )
-from .requests import ModelSelector, ResourceEnvelope, ServingRequirements
 from .models import ArtifactRecord, ModelCatalog, ModelRecord
 from .plans import ServingPlan
+from .requests import ModelSelector, ResourceEnvelope, ServingRequirements
 from .results import RecommendationBundle
 from .units import CountRange, Duration, MemoryAmount
 

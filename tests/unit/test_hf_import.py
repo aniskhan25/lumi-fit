@@ -4,7 +4,6 @@ from pathlib import Path
 from lumi_fit.adapters.hf_import import import_huggingface_snapshot
 from lumi_fit.domain.models import ModelCapability, WeightDtype
 
-
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = ROOT / "tests/fixtures/hf"
 

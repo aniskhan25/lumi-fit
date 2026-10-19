@@ -8,7 +8,6 @@ from lumi_fit.catalog.validation import (
 from lumi_fit.domain.catalogs import AllocationGranularity, SupportLevel
 from lumi_fit.domain.units import MemoryUnit
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 

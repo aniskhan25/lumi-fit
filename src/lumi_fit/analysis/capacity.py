@@ -19,7 +19,6 @@ from lumi_fit.domain.results import (
     FeasibilityStatus,
 )
 
-
 CONCURRENCY_SEARCH_UPPER_BOUND = 65_536
 
 

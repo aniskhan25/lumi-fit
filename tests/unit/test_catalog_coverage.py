@@ -3,7 +3,6 @@ from pathlib import Path
 from lumi_fit.catalog.coverage import build_model_coverage_report
 from lumi_fit.catalog.validation import load_default_catalogs
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -32,4 +31,3 @@ def test_every_artifact_has_revision_pinned_provenance() -> None:
         assert artifact.revision in artifact.source_url
         assert artifact.model_id in artifact.source_url
         assert artifact.total_bytes is not None
-

@@ -11,7 +11,6 @@ from lumi_fit.presentation import (
     format_candidates_csv,
 )
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 

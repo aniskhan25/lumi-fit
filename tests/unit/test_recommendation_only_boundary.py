@@ -3,7 +3,6 @@ from pathlib import Path
 
 from lumi_fit.cli import build_parser
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 

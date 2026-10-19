@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import math
-from decimal import Decimal, ROUND_CEILING
+from decimal import ROUND_CEILING, Decimal
 
 from lumi_fit.domain.catalogs import HardwareProfile
 from lumi_fit.domain.models import ArtifactRecord, ModelRecord, WeightDtype

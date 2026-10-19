@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from decimal import Decimal, ROUND_CEILING
+from decimal import ROUND_CEILING, Decimal
 
 from lumi_fit.domain.catalogs import BillingRule, BillingRuleType
 from lumi_fit.domain.units import Duration, MemoryAmount

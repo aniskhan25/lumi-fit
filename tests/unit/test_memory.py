@@ -5,7 +5,6 @@ from lumi_fit.catalog.loader import load_resources, load_serving
 from lumi_fit.catalog.validation import load_default_catalogs
 from lumi_fit.planning.model_first import generate_model_first_candidates
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 
