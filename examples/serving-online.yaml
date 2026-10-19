@@ -1,0 +1,22 @@
+schema_version: "1.0"
+mode: online
+use_case: coding
+input_tokens: 8192
+max_output_tokens: 2048
+max_model_length: 16384
+concurrent_sequences: 8
+request_arrival_rate_per_second: 0.25
+service_duration: 8 hours
+latency_targets:
+  max_ttft_seconds: 3
+  max_itl_seconds: 0.08
+throughput_targets:
+  min_output_tokens_per_second: 100
+minimum_hbm_headroom_fraction: 0.15
+allowed_runtimes:
+  - vllm
+allowed_quantizations:
+  - bf16
+  - fp16
+objective: interactive
+

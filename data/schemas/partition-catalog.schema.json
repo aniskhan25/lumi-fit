@@ -1,0 +1,266 @@
+{
+  "$defs": {
+    "AllocationGranularity": {
+      "enum": [
+        "full-node",
+        "resource"
+      ],
+      "title": "AllocationGranularity",
+      "type": "string"
+    },
+    "CatalogMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "last_verified_at": {
+          "format": "date-time",
+          "title": "Last Verified At",
+          "type": "string"
+        },
+        "profile_version": {
+          "minLength": 1,
+          "title": "Profile Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        },
+        "valid_from": {
+          "format": "date",
+          "title": "Valid From",
+          "type": "string"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        }
+      },
+      "required": [
+        "profile_version",
+        "valid_from",
+        "last_verified_at",
+        "sources"
+      ],
+      "title": "CatalogMetadata",
+      "type": "object"
+    },
+    "Duration": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/DurationUnit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "Duration",
+      "type": "object"
+    },
+    "DurationUnit": {
+      "enum": [
+        "seconds",
+        "minutes",
+        "hours",
+        "days"
+      ],
+      "title": "DurationUnit",
+      "type": "string"
+    },
+    "PartitionProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "allocation_granularity": {
+          "$ref": "#/$defs/AllocationGranularity"
+        },
+        "billing_rule": {
+          "minLength": 1,
+          "title": "Billing Rule",
+          "type": "string"
+        },
+        "default_enabled": {
+          "default": true,
+          "title": "Default Enabled",
+          "type": "boolean"
+        },
+        "exclusive": {
+          "title": "Exclusive",
+          "type": "boolean"
+        },
+        "hardware_profile": {
+          "minLength": 1,
+          "title": "Hardware Profile",
+          "type": "string"
+        },
+        "max_node_hours": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Node Hours"
+        },
+        "max_nodes": {
+          "minimum": 1,
+          "title": "Max Nodes",
+          "type": "integer"
+        },
+        "max_walltime": {
+          "$ref": "#/$defs/Duration"
+        },
+        "notes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "partition_id": {
+          "minLength": 1,
+          "title": "Partition Id",
+          "type": "string"
+        },
+        "purpose": {
+          "minLength": 1,
+          "title": "Purpose",
+          "type": "string"
+        },
+        "special_access_required": {
+          "default": false,
+          "title": "Special Access Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "partition_id",
+        "hardware_profile",
+        "purpose",
+        "allocation_granularity",
+        "exclusive",
+        "max_nodes",
+        "max_walltime",
+        "billing_rule"
+      ],
+      "title": "PartitionProfile",
+      "type": "object"
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "SourceReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "partitions",
+      "default": "partitions",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/CatalogMetadata"
+    },
+    "partitions": {
+      "items": {
+        "$ref": "#/$defs/PartitionProfile"
+      },
+      "minItems": 1,
+      "title": "Partitions",
+      "type": "array"
+    },
+    "system_id": {
+      "minLength": 1,
+      "title": "System Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "metadata",
+    "system_id",
+    "partitions"
+  ],
+  "title": "PartitionCatalog",
+  "type": "object"
+}

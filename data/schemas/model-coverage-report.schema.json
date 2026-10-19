@@ -1,0 +1,111 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "artifact_count": {
+      "minimum": 0,
+      "title": "Artifact Count",
+      "type": "integer"
+    },
+    "capability_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Capability Counts",
+      "type": "object"
+    },
+    "catalog_profile_version": {
+      "minLength": 1,
+      "title": "Catalog Profile Version",
+      "type": "string"
+    },
+    "catalog_source_count": {
+      "minimum": 0,
+      "title": "Catalog Source Count",
+      "type": "integer"
+    },
+    "complete": {
+      "title": "Complete",
+      "type": "boolean"
+    },
+    "family_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Family Counts",
+      "type": "object"
+    },
+    "gated_model_count": {
+      "minimum": 0,
+      "title": "Gated Model Count",
+      "type": "integer"
+    },
+    "license_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "License Counts",
+      "type": "object"
+    },
+    "model_count": {
+      "minimum": 0,
+      "title": "Model Count",
+      "type": "integer"
+    },
+    "parameter_band_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Parameter Band Counts",
+      "type": "object"
+    },
+    "provenance_complete": {
+      "title": "Provenance Complete",
+      "type": "boolean"
+    },
+    "provenance_issues": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Provenance Issues",
+      "type": "array"
+    },
+    "quantization_counts": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Quantization Counts",
+      "type": "object"
+    },
+    "target_profile_version": {
+      "minLength": 1,
+      "title": "Target Profile Version",
+      "type": "string"
+    },
+    "unmet_targets": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Unmet Targets",
+      "type": "array"
+    }
+  },
+  "required": [
+    "catalog_profile_version",
+    "target_profile_version",
+    "catalog_source_count",
+    "model_count",
+    "artifact_count",
+    "gated_model_count",
+    "family_counts",
+    "capability_counts",
+    "license_counts",
+    "quantization_counts",
+    "parameter_band_counts",
+    "provenance_complete",
+    "complete"
+  ],
+  "title": "ModelCoverageReport",
+  "type": "object"
+}

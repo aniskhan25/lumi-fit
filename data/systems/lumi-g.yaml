@@ -1,0 +1,41 @@
+kind: hardware
+metadata:
+  schema_version: "1.0"
+  profile_version: "2026-08-09.1"
+  valid_from: 2026-08-09
+  last_verified_at: 2026-08-09T00:00:00+03:00
+  sources:
+    - title: LUMI-G GPU nodes
+      url: https://docs.lumi-supercomputer.eu/hardware/lumig/
+    - title: LUMI network and interconnect
+      url: https://docs.lumi-supercomputer.eu/hardware/network/
+system_id: lumi-g
+display_name: LUMI-G AMD MI250X partition
+node_count: 2978
+gcd:
+  accelerator_architecture: gfx90a
+  model: AMD Instinct MI250X Graphics Compute Die
+  gcds_per_module: 2
+  modules_per_node: 4
+  hbm_per_gcd: 64 GB
+cpu:
+  model: AMD EPYC 7A53 Trento
+  physical_cores: 64
+  schedulable_cores: 56
+  numa_domains: 4
+  memory_per_node: 512 GiB
+topology_links:
+  - scope: within-mi250x-module
+    peak_bidirectional_bandwidth_gb_s: 400
+    notes: Connects the two GCDs within one MI250X module.
+  - scope: between-mi250x-modules-single-link
+    peak_bidirectional_bandwidth_gb_s: 100
+    notes: Some GCD pairs on different modules use one Infinity Fabric link.
+  - scope: between-mi250x-modules-double-link
+    peak_bidirectional_bandwidth_gb_s: 200
+    notes: Some GCD pairs on different modules use two Infinity Fabric links.
+network:
+  fabric: HPE Slingshot 11
+  endpoints_per_node: 4
+  peak_bidirectional_bandwidth_per_endpoint_gb_s: 50
+

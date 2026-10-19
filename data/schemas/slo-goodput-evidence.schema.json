@@ -1,0 +1,221 @@
+{
+  "$defs": {
+    "ConfidenceClass": {
+      "enum": [
+        "measured-exact",
+        "measured-near",
+        "calibrated",
+        "analytical",
+        "heuristic",
+        "unknown"
+      ],
+      "title": "ConfidenceClass",
+      "type": "string"
+    },
+    "TokenLengthPoint": {
+      "additionalProperties": false,
+      "description": "One weighted point in a declared prompt/output-length distribution.",
+      "properties": {
+        "input_tokens": {
+          "minimum": 1,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "minimum": 1,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "probability": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 1.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Probability"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "probability"
+      ],
+      "title": "TokenLengthPoint",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Measured goodput evidence for one exact vLLM deployment and workload.",
+  "properties": {
+    "artifact_id": {
+      "minLength": 1,
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "concurrent_sequences": {
+      "minimum": 1,
+      "title": "Concurrent Sequences",
+      "type": "integer"
+    },
+    "confidence": {
+      "$ref": "#/$defs/ConfidenceClass"
+    },
+    "context_tokens": {
+      "minimum": 1,
+      "title": "Context Tokens",
+      "type": "integer"
+    },
+    "evidence_ids": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "failure_rate": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Failure Rate"
+    },
+    "gcd_count": {
+      "minimum": 1,
+      "title": "Gcd Count",
+      "type": "integer"
+    },
+    "maximum_slo_constrained": {
+      "const": true,
+      "default": true,
+      "title": "Maximum Slo Constrained",
+      "type": "boolean"
+    },
+    "model_id": {
+      "pattern": "^.+/.+$",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "model_revision": {
+      "minLength": 1,
+      "title": "Model Revision",
+      "type": "string"
+    },
+    "offered_request_rate_per_second": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Offered Request Rate Per Second"
+    },
+    "precision": {
+      "minLength": 1,
+      "title": "Precision",
+      "type": "string"
+    },
+    "request_goodput_lcb95_per_second": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Request Goodput Lcb95 Per Second"
+    },
+    "request_goodput_per_second": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Request Goodput Per Second"
+    },
+    "runtime_id": {
+      "minLength": 1,
+      "title": "Runtime Id",
+      "type": "string"
+    },
+    "sample_size": {
+      "minimum": 1,
+      "title": "Sample Size",
+      "type": "integer"
+    },
+    "slo_attainment_fraction": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Slo Attainment Fraction"
+    },
+    "tensor_parallel": {
+      "minimum": 1,
+      "title": "Tensor Parallel",
+      "type": "integer"
+    },
+    "token_length_distribution": {
+      "items": {
+        "$ref": "#/$defs/TokenLengthPoint"
+      },
+      "minItems": 1,
+      "title": "Token Length Distribution",
+      "type": "array"
+    }
+  },
+  "required": [
+    "model_id",
+    "model_revision",
+    "artifact_id",
+    "runtime_id",
+    "precision",
+    "context_tokens",
+    "gcd_count",
+    "tensor_parallel",
+    "concurrent_sequences",
+    "token_length_distribution",
+    "offered_request_rate_per_second",
+    "request_goodput_per_second",
+    "request_goodput_lcb95_per_second",
+    "slo_attainment_fraction",
+    "failure_rate",
+    "sample_size",
+    "confidence",
+    "evidence_ids"
+  ],
+  "title": "SloGoodputEvidence",
+  "type": "object"
+}

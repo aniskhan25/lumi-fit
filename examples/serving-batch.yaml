@@ -1,0 +1,19 @@
+schema_version: "1.0"
+mode: batch
+use_case: general
+input_tokens: 4096
+max_output_tokens: 1024
+max_model_length: 8192
+concurrent_sequences: 32
+batch_request_count: 100000
+completion_deadline: 12 hours
+throughput_targets:
+  min_output_tokens_per_second: 500
+minimum_hbm_headroom_fraction: 0.15
+allowed_runtimes:
+  - vllm
+allowed_quantizations:
+  - bf16
+  - fp16
+objective: throughput
+

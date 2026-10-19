@@ -1,0 +1,11 @@
+schema_version: "1.0"
+partition: small-g
+nodes: 1
+gcds: 4
+cpu_cores_per_node: 32
+cpu_memory_per_node: 256 GB
+walltime: 8 hours
+maximum_gpu_hours: 16
+allow_partial_node: true
+allow_multi_node: false
+

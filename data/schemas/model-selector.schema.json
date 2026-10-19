@@ -1,0 +1,149 @@
+{
+  "$defs": {
+    "ModelCapability": {
+      "enum": [
+        "text-generation",
+        "chat",
+        "coding",
+        "reasoning",
+        "embedding",
+        "tool-use"
+      ],
+      "title": "ModelCapability",
+      "type": "string"
+    },
+    "UseCase": {
+      "enum": [
+        "general",
+        "chat",
+        "coding",
+        "reasoning",
+        "embedding",
+        "custom"
+      ],
+      "title": "UseCase",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allow_gated": {
+      "default": false,
+      "title": "Allow Gated",
+      "type": "boolean"
+    },
+    "capabilities": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ModelCapability"
+      },
+      "title": "Capabilities",
+      "type": "array"
+    },
+    "exact_model": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Exact Model"
+    },
+    "exclude_patterns": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Exclude Patterns",
+      "type": "array"
+    },
+    "families": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Families",
+      "type": "array"
+    },
+    "include_patterns": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Include Patterns",
+      "type": "array"
+    },
+    "languages": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Languages",
+      "type": "array"
+    },
+    "licenses": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Licenses",
+      "type": "array"
+    },
+    "maximum_parameters": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Maximum Parameters"
+    },
+    "minimum_parameters": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Minimum Parameters"
+    },
+    "models": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Models",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "use_case": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UseCase"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "title": "ModelSelector",
+  "type": "object"
+}

@@ -1,0 +1,265 @@
+{
+  "$defs": {
+    "AllocationNeighbor": {
+      "additionalProperties": false,
+      "properties": {
+        "allocated_gcds": {
+          "minimum": 1,
+          "title": "Allocated Gcds",
+          "type": "integer"
+        },
+        "gpu_hours_per_wallclock_hour": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Gpu Hours Per Wallclock Hour"
+        },
+        "memory_safe_maximum_concurrency": {
+          "minimum": 1,
+          "title": "Memory Safe Maximum Concurrency",
+          "type": "integer"
+        },
+        "memory_safe_maximum_context_tokens": {
+          "minimum": 1,
+          "title": "Memory Safe Maximum Context Tokens",
+          "type": "integer"
+        },
+        "nodes": {
+          "minimum": 1,
+          "title": "Nodes",
+          "type": "integer"
+        },
+        "plan_id": {
+          "minLength": 1,
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "relationship": {
+          "enum": [
+            "lower-cost",
+            "higher-capacity"
+          ],
+          "title": "Relationship",
+          "type": "string"
+        },
+        "replicas": {
+          "minimum": 1,
+          "title": "Replicas",
+          "type": "integer"
+        },
+        "tensor_parallel": {
+          "minimum": 1,
+          "title": "Tensor Parallel",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "relationship",
+        "plan_id",
+        "nodes",
+        "allocated_gcds",
+        "tensor_parallel",
+        "replicas",
+        "gpu_hours_per_wallclock_hour",
+        "memory_safe_maximum_concurrency",
+        "memory_safe_maximum_context_tokens"
+      ],
+      "title": "AllocationNeighbor",
+      "type": "object"
+    },
+    "CapacityProbe": {
+      "additionalProperties": false,
+      "properties": {
+        "concurrent_sequences_per_replica": {
+          "minimum": 1,
+          "title": "Concurrent Sequences Per Replica",
+          "type": "integer"
+        },
+        "conservative_hbm_utilization_fraction": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Conservative Hbm Utilization Fraction"
+        },
+        "conservative_peak_per_rank_bytes": {
+          "minimum": 0,
+          "title": "Conservative Peak Per Rank Bytes",
+          "type": "integer"
+        },
+        "context_tokens": {
+          "minimum": 1,
+          "title": "Context Tokens",
+          "type": "integer"
+        },
+        "memory_safe": {
+          "title": "Memory Safe",
+          "type": "boolean"
+        },
+        "total_concurrent_sequences": {
+          "minimum": 1,
+          "title": "Total Concurrent Sequences",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "context_tokens",
+        "total_concurrent_sequences",
+        "concurrent_sequences_per_replica",
+        "memory_safe",
+        "conservative_peak_per_rank_bytes",
+        "conservative_hbm_utilization_fraction"
+      ],
+      "title": "CapacityProbe",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "analytical_performance_explanation": {
+      "minLength": 1,
+      "title": "Analytical Performance Explanation",
+      "type": "string"
+    },
+    "analytical_performance_maximum_concurrency": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Analytical Performance Maximum Concurrency"
+    },
+    "assumptions": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "basis": {
+      "const": "memory-safe",
+      "default": "memory-safe",
+      "title": "Basis",
+      "type": "string"
+    },
+    "catalog_context_limit": {
+      "minimum": 1,
+      "title": "Catalog Context Limit",
+      "type": "integer"
+    },
+    "concurrency_search_capped": {
+      "default": false,
+      "title": "Concurrency Search Capped",
+      "type": "boolean"
+    },
+    "concurrency_search_upper_bound": {
+      "minimum": 1,
+      "title": "Concurrency Search Upper Bound",
+      "type": "integer"
+    },
+    "evaluated_points": {
+      "items": {
+        "$ref": "#/$defs/CapacityProbe"
+      },
+      "minItems": 1,
+      "title": "Evaluated Points",
+      "type": "array"
+    },
+    "higher_capacity_neighbor": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AllocationNeighbor"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "lower_cost_neighbor": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AllocationNeighbor"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "memory_safe_maximum_concurrency": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CapacityProbe"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "memory_safe_maximum_context": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CapacityProbe"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "method_id": {
+      "const": "capacity.memory-binary-search.v1",
+      "default": "capacity.memory-binary-search.v1",
+      "title": "Method Id",
+      "type": "string"
+    },
+    "requested": {
+      "$ref": "#/$defs/CapacityProbe"
+    },
+    "safe_hbm_limit_fraction": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "title": "Safe Hbm Limit Fraction"
+    }
+  },
+  "required": [
+    "requested",
+    "catalog_context_limit",
+    "safe_hbm_limit_fraction",
+    "concurrency_search_upper_bound",
+    "evaluated_points",
+    "analytical_performance_explanation"
+  ],
+  "title": "CapacityEnvelope",
+  "type": "object"
+}

@@ -1,0 +1,270 @@
+{
+  "$defs": {
+    "CatalogMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "last_verified_at": {
+          "format": "date-time",
+          "title": "Last Verified At",
+          "type": "string"
+        },
+        "profile_version": {
+          "minLength": 1,
+          "title": "Profile Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        },
+        "valid_from": {
+          "format": "date",
+          "title": "Valid From",
+          "type": "string"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        }
+      },
+      "required": [
+        "profile_version",
+        "valid_from",
+        "last_verified_at",
+        "sources"
+      ],
+      "title": "CatalogMetadata",
+      "type": "object"
+    },
+    "QuantizationSupport": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "support": {
+          "$ref": "#/$defs/SupportLevel"
+        }
+      },
+      "required": [
+        "name",
+        "support",
+        "notes"
+      ],
+      "title": "QuantizationSupport",
+      "type": "object"
+    },
+    "RuntimeProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "accelerator_architectures": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Accelerator Architectures",
+          "type": "array"
+        },
+        "container_family": {
+          "minLength": 1,
+          "title": "Container Family",
+          "type": "string"
+        },
+        "container_path_pattern": {
+          "minLength": 1,
+          "title": "Container Path Pattern",
+          "type": "string"
+        },
+        "engine": {
+          "minLength": 1,
+          "title": "Engine",
+          "type": "string"
+        },
+        "multi_node": {
+          "$ref": "#/$defs/SupportLevel"
+        },
+        "notes": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "pipeline_parallel": {
+          "$ref": "#/$defs/SupportLevel"
+        },
+        "quantizations": {
+          "items": {
+            "$ref": "#/$defs/QuantizationSupport"
+          },
+          "minItems": 1,
+          "title": "Quantizations",
+          "type": "array"
+        },
+        "runtime_id": {
+          "minLength": 1,
+          "title": "Runtime Id",
+          "type": "string"
+        },
+        "runtime_name": {
+          "minLength": 1,
+          "title": "Runtime Name",
+          "type": "string"
+        },
+        "serving_modes": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Serving Modes",
+          "type": "array"
+        },
+        "tensor_parallel": {
+          "$ref": "#/$defs/SupportLevel"
+        },
+        "verified_container_path": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Verified Container Path"
+        }
+      },
+      "required": [
+        "runtime_id",
+        "runtime_name",
+        "engine",
+        "container_family",
+        "container_path_pattern",
+        "accelerator_architectures",
+        "serving_modes",
+        "tensor_parallel",
+        "pipeline_parallel",
+        "multi_node",
+        "quantizations"
+      ],
+      "title": "RuntimeProfile",
+      "type": "object"
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "SourceReference",
+      "type": "object"
+    },
+    "SupportLevel": {
+      "enum": [
+        "proven",
+        "supported",
+        "experimental",
+        "conditional",
+        "unsupported",
+        "unknown"
+      ],
+      "title": "SupportLevel",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "runtimes",
+      "default": "runtimes",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/CatalogMetadata"
+    },
+    "runtimes": {
+      "items": {
+        "$ref": "#/$defs/RuntimeProfile"
+      },
+      "minItems": 1,
+      "title": "Runtimes",
+      "type": "array"
+    },
+    "system_id": {
+      "minLength": 1,
+      "title": "System Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "metadata",
+    "system_id",
+    "runtimes"
+  ],
+  "title": "RuntimeCatalog",
+  "type": "object"
+}

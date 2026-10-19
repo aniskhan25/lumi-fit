@@ -1,0 +1,32 @@
+kind: model-coverage
+metadata:
+  schema_version: "1.0"
+  profile_version: "2026-08-09.1"
+  valid_from: 2026-08-09
+  last_verified_at: 2026-08-09T00:00:00+03:00
+  sources:
+    - title: Phase 4A recommendation coverage design
+      path: docs/phase4-recommendation-quality.md
+minimum_models: 7
+minimum_families: 5
+required_capabilities:
+  - text-generation
+  - chat
+  - coding
+  - reasoning
+parameter_bands:
+  - band_id: compact
+    minimum_parameters: 0
+    maximum_parameters: 4000000000
+    minimum_models: 1
+  - band_id: small
+    minimum_parameters: 4000000001
+    maximum_parameters: 10000000000
+    minimum_models: 2
+  - band_id: medium
+    minimum_parameters: 10000000001
+    maximum_parameters: 40000000000
+    minimum_models: 3
+  - band_id: large
+    minimum_parameters: 40000000001
+    minimum_models: 1

@@ -1,0 +1,264 @@
+{
+  "$defs": {
+    "BillingRule": {
+      "additionalProperties": false,
+      "properties": {
+        "billed_gpu_hours_per_gcd_hour": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Billed Gpu Hours Per Gcd Hour"
+        },
+        "billed_gpu_hours_per_node_hour": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Billed Gpu Hours Per Node Hour"
+        },
+        "cpu_cores_per_billing_slice": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Cores Per Billing Slice"
+        },
+        "formula": {
+          "minLength": 1,
+          "title": "Formula",
+          "type": "string"
+        },
+        "memory_per_billing_slice": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MemoryAmount"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "rule_id": {
+          "minLength": 1,
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/BillingRuleType"
+        }
+      },
+      "required": [
+        "rule_id",
+        "type",
+        "formula"
+      ],
+      "title": "BillingRule",
+      "type": "object"
+    },
+    "BillingRuleType": {
+      "enum": [
+        "full-node-gpu",
+        "subnode-gpu"
+      ],
+      "title": "BillingRuleType",
+      "type": "string"
+    },
+    "CatalogMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "last_verified_at": {
+          "format": "date-time",
+          "title": "Last Verified At",
+          "type": "string"
+        },
+        "profile_version": {
+          "minLength": 1,
+          "title": "Profile Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        },
+        "valid_from": {
+          "format": "date",
+          "title": "Valid From",
+          "type": "string"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        }
+      },
+      "required": [
+        "profile_version",
+        "valid_from",
+        "last_verified_at",
+        "sources"
+      ],
+      "title": "CatalogMetadata",
+      "type": "object"
+    },
+    "MemoryAmount": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/MemoryUnit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "MemoryAmount",
+      "type": "object"
+    },
+    "MemoryUnit": {
+      "enum": [
+        "MB",
+        "GB",
+        "TB",
+        "MiB",
+        "GiB",
+        "TiB"
+      ],
+      "title": "MemoryUnit",
+      "type": "string"
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "SourceReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "const": "billing",
+      "default": "billing",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/CatalogMetadata"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/BillingRule"
+      },
+      "minItems": 1,
+      "title": "Rules",
+      "type": "array"
+    },
+    "system_id": {
+      "minLength": 1,
+      "title": "System Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "metadata",
+    "system_id",
+    "rules"
+  ],
+  "title": "BillingCatalog",
+  "type": "object"
+}

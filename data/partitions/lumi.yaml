@@ -1,0 +1,57 @@
+kind: partitions
+metadata:
+  schema_version: "1.0"
+  profile_version: "2026-08-09.1"
+  valid_from: 2026-08-09
+  last_verified_at: 2026-08-09T00:00:00+03:00
+  sources:
+    - title: LUMI Slurm partitions
+      url: https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/partitions/
+system_id: lumi-g
+partitions:
+  - partition_id: small-g
+    hardware_profile: lumi-g
+    purpose: Small, sub-node, and small multi-node GPU jobs
+    allocation_granularity: resource
+    exclusive: false
+    max_nodes: 4
+    max_walltime: 3 days
+    billing_rule: lumi-g-subnode
+    notes:
+      - A job may share a node unless it requests exclusive access.
+      - Prefer this partition for serving plans that cannot use a complete node.
+  - partition_id: standard-g
+    hardware_profile: lumi-g
+    purpose: Full-node production GPU jobs
+    allocation_granularity: full-node
+    exclusive: true
+    max_nodes: 1024
+    max_walltime: 2 days
+    billing_rule: lumi-g-full-node
+    notes:
+      - The complete node is allocated and billed even when fewer resources are used.
+  - partition_id: dev-g
+    hardware_profile: lumi-g
+    purpose: Short debugging and serving validation jobs
+    allocation_granularity: resource
+    exclusive: false
+    max_nodes: 32
+    max_walltime: 3 hours
+    max_node_hours: 16
+    billing_rule: lumi-g-subnode
+    notes:
+      - Intended for debugging and quick tests, not production serving.
+      - Node count and walltime must also remain within the 16 node-hour limit.
+  - partition_id: bench
+    hardware_profile: lumi-g
+    purpose: Exceptional large-scale benchmark runs
+    allocation_granularity: full-node
+    exclusive: true
+    max_nodes: 2978
+    max_walltime: 6 hours
+    default_enabled: false
+    special_access_required: true
+    billing_rule: lumi-g-full-node
+    notes:
+      - Access must be requested and is not enabled for normal projects.
+

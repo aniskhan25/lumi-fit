@@ -1,0 +1,200 @@
+{
+  "$defs": {
+    "CountRange": {
+      "additionalProperties": false,
+      "properties": {
+        "maximum": {
+          "minimum": 0,
+          "title": "Maximum",
+          "type": "integer"
+        },
+        "minimum": {
+          "minimum": 0,
+          "title": "Minimum",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "minimum",
+        "maximum"
+      ],
+      "title": "CountRange",
+      "type": "object"
+    },
+    "Duration": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/DurationUnit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "Duration",
+      "type": "object"
+    },
+    "DurationUnit": {
+      "enum": [
+        "seconds",
+        "minutes",
+        "hours",
+        "days"
+      ],
+      "title": "DurationUnit",
+      "type": "string"
+    },
+    "MemoryAmount": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/MemoryUnit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "MemoryAmount",
+      "type": "object"
+    },
+    "MemoryUnit": {
+      "enum": [
+        "MB",
+        "GB",
+        "TB",
+        "MiB",
+        "GiB",
+        "TiB"
+      ],
+      "title": "MemoryUnit",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allow_multi_node": {
+      "default": false,
+      "title": "Allow Multi Node",
+      "type": "boolean"
+    },
+    "allow_partial_node": {
+      "default": true,
+      "title": "Allow Partial Node",
+      "type": "boolean"
+    },
+    "cpu_cores_per_node": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cpu Cores Per Node"
+    },
+    "cpu_memory_per_node": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MemoryAmount"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "enabled_partitions": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Enabled Partitions",
+      "type": "array"
+    },
+    "gcds": {
+      "$ref": "#/$defs/CountRange"
+    },
+    "maximum_gpu_hours": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Maximum Gpu Hours"
+    },
+    "nodes": {
+      "$ref": "#/$defs/CountRange",
+      "default": {
+        "maximum": 1,
+        "minimum": 1
+      }
+    },
+    "partition": {
+      "default": "auto",
+      "title": "Partition",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "walltime": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Duration"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "gcds"
+  ],
+  "title": "ResourceEnvelope",
+  "type": "object"
+}

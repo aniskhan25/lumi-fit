@@ -1,0 +1,455 @@
+{
+  "$defs": {
+    "Duration": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/DurationUnit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "Duration",
+      "type": "object"
+    },
+    "DurationUnit": {
+      "enum": [
+        "seconds",
+        "minutes",
+        "hours",
+        "days"
+      ],
+      "title": "DurationUnit",
+      "type": "string"
+    },
+    "LatencyTargets": {
+      "additionalProperties": false,
+      "properties": {
+        "max_end_to_end_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max End To End Seconds"
+        },
+        "max_itl_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Itl Seconds"
+        },
+        "max_ttft_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Ttft Seconds"
+        }
+      },
+      "title": "LatencyTargets",
+      "type": "object"
+    },
+    "ObjectiveProfile": {
+      "enum": [
+        "balanced",
+        "interactive",
+        "throughput",
+        "budget",
+        "quality-first"
+      ],
+      "title": "ObjectiveProfile",
+      "type": "string"
+    },
+    "ServingMode": {
+      "enum": [
+        "online",
+        "batch"
+      ],
+      "title": "ServingMode",
+      "type": "string"
+    },
+    "ThroughputTargets": {
+      "additionalProperties": false,
+      "properties": {
+        "min_input_tokens_per_second": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Input Tokens Per Second"
+        },
+        "min_output_tokens_per_second": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Output Tokens Per Second"
+        },
+        "min_requests_per_second": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Requests Per Second"
+        }
+      },
+      "title": "ThroughputTargets",
+      "type": "object"
+    },
+    "TokenLengthPoint": {
+      "additionalProperties": false,
+      "description": "One weighted point in a declared prompt/output-length distribution.",
+      "properties": {
+        "input_tokens": {
+          "minimum": 1,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "minimum": 1,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "probability": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 1.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Probability"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "probability"
+      ],
+      "title": "TokenLengthPoint",
+      "type": "object"
+    },
+    "UseCase": {
+      "enum": [
+        "general",
+        "chat",
+        "coding",
+        "reasoning",
+        "embedding",
+        "custom"
+      ],
+      "title": "UseCase",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowed_quantizations": {
+      "default": [
+        "bf16",
+        "fp16"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "title": "Allowed Quantizations",
+      "type": "array"
+    },
+    "allowed_runtimes": {
+      "default": [
+        "vllm"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "title": "Allowed Runtimes",
+      "type": "array"
+    },
+    "batch_request_count": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Batch Request Count"
+    },
+    "completion_deadline": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Duration"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "concurrent_sequences": {
+      "minimum": 1,
+      "title": "Concurrent Sequences",
+      "type": "integer"
+    },
+    "input_tokens": {
+      "minimum": 1,
+      "title": "Input Tokens",
+      "type": "integer"
+    },
+    "latency_targets": {
+      "$ref": "#/$defs/LatencyTargets",
+      "default": {
+        "max_end_to_end_seconds": null,
+        "max_itl_seconds": null,
+        "max_ttft_seconds": null
+      }
+    },
+    "max_model_length": {
+      "minimum": 1,
+      "title": "Max Model Length",
+      "type": "integer"
+    },
+    "max_output_tokens": {
+      "minimum": 1,
+      "title": "Max Output Tokens",
+      "type": "integer"
+    },
+    "maximum_failure_rate": {
+      "anyOf": [
+        {
+          "exclusiveMaximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Maximum Failure Rate"
+    },
+    "minimum_context_coverage": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "default": "1",
+      "title": "Minimum Context Coverage"
+    },
+    "minimum_hbm_headroom_fraction": {
+      "anyOf": [
+        {
+          "exclusiveMaximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "default": "0.15",
+      "title": "Minimum Hbm Headroom Fraction"
+    },
+    "minimum_quality_score": {
+      "anyOf": [
+        {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Minimum Quality Score"
+    },
+    "mode": {
+      "$ref": "#/$defs/ServingMode"
+    },
+    "objective": {
+      "$ref": "#/$defs/ObjectiveProfile",
+      "default": "balanced"
+    },
+    "request_arrival_rate_per_second": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Request Arrival Rate Per Second"
+    },
+    "required_slo_attainment": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0.0,
+          "maximum": 1.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Required Slo Attainment"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "service_duration": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Duration"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "throughput_targets": {
+      "$ref": "#/$defs/ThroughputTargets",
+      "default": {
+        "min_input_tokens_per_second": null,
+        "min_output_tokens_per_second": null,
+        "min_requests_per_second": null
+      }
+    },
+    "token_length_distribution": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/TokenLengthPoint"
+      },
+      "title": "Token Length Distribution",
+      "type": "array"
+    },
+    "use_case": {
+      "$ref": "#/$defs/UseCase",
+      "default": "general"
+    }
+  },
+  "required": [
+    "mode",
+    "input_tokens",
+    "max_output_tokens",
+    "max_model_length",
+    "concurrent_sequences"
+  ],
+  "title": "ServingRequirements",
+  "type": "object"
+}

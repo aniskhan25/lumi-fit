@@ -1,0 +1,24 @@
+kind: billing
+metadata:
+  schema_version: "1.0"
+  profile_version: "2026-08-09.1"
+  valid_from: 2026-08-09
+  last_verified_at: 2026-08-09T00:00:00+03:00
+  sources:
+    - title: LUMI billing policy
+      url: https://docs.lumi-supercomputer.eu/runjobs/lumi_env/billing/
+system_id: lumi-g
+rules:
+  - rule_id: lumi-g-full-node
+    type: full-node-gpu
+    billed_gpu_hours_per_node_hour: 4
+    formula: 4 * allocated_nodes * elapsed_hours
+  - rule_id: lumi-g-subnode
+    type: subnode-gpu
+    billed_gpu_hours_per_gcd_hour: 0.5
+    cpu_cores_per_billing_slice: 8
+    memory_per_billing_slice: 64 GB
+    formula: >-
+      0.5 * max(allocated_gcds, ceil(allocated_cpu_cores / 8),
+      ceil(allocated_cpu_memory_gb / 64)) * elapsed_hours
+

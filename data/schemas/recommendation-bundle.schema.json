@@ -1,0 +1,2837 @@
+{
+  "$defs": {
+    "AllocationNeighbor": {
+      "additionalProperties": false,
+      "properties": {
+        "allocated_gcds": {
+          "minimum": 1,
+          "title": "Allocated Gcds",
+          "type": "integer"
+        },
+        "gpu_hours_per_wallclock_hour": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Gpu Hours Per Wallclock Hour"
+        },
+        "memory_safe_maximum_concurrency": {
+          "minimum": 1,
+          "title": "Memory Safe Maximum Concurrency",
+          "type": "integer"
+        },
+        "memory_safe_maximum_context_tokens": {
+          "minimum": 1,
+          "title": "Memory Safe Maximum Context Tokens",
+          "type": "integer"
+        },
+        "nodes": {
+          "minimum": 1,
+          "title": "Nodes",
+          "type": "integer"
+        },
+        "plan_id": {
+          "minLength": 1,
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "relationship": {
+          "enum": [
+            "lower-cost",
+            "higher-capacity"
+          ],
+          "title": "Relationship",
+          "type": "string"
+        },
+        "replicas": {
+          "minimum": 1,
+          "title": "Replicas",
+          "type": "integer"
+        },
+        "tensor_parallel": {
+          "minimum": 1,
+          "title": "Tensor Parallel",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "relationship",
+        "plan_id",
+        "nodes",
+        "allocated_gcds",
+        "tensor_parallel",
+        "replicas",
+        "gpu_hours_per_wallclock_hour",
+        "memory_safe_maximum_concurrency",
+        "memory_safe_maximum_context_tokens"
+      ],
+      "title": "AllocationNeighbor",
+      "type": "object"
+    },
+    "BillingAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "billing_rule_id": {
+          "minLength": 1,
+          "title": "Billing Rule Id",
+          "type": "string"
+        },
+        "duration_hours": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Duration Hours"
+        },
+        "gpu_hours_per_wallclock_hour": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Gpu Hours Per Wallclock Hour"
+        },
+        "total_gpu_hours": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Total Gpu Hours"
+        }
+      },
+      "required": [
+        "gpu_hours_per_wallclock_hour",
+        "duration_hours",
+        "total_gpu_hours",
+        "billing_rule_id"
+      ],
+      "title": "BillingAnalysis",
+      "type": "object"
+    },
+    "CandidateResult": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis": {
+          "$ref": "#/$defs/PlanAnalysis"
+        },
+        "capacity_envelope": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CapacityEnvelope"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "lumi_vllm_fit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LumiVllmFitAnalysis"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "model_parameters": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Parameters"
+        },
+        "plan": {
+          "$ref": "#/$defs/ServingPlan"
+        },
+        "plan_id": {
+          "minLength": 1,
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "tiers": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Tiers",
+          "type": "array"
+        }
+      },
+      "required": [
+        "plan_id",
+        "plan",
+        "analysis"
+      ],
+      "title": "CandidateResult",
+      "type": "object"
+    },
+    "CapacityEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "analytical_performance_explanation": {
+          "minLength": 1,
+          "title": "Analytical Performance Explanation",
+          "type": "string"
+        },
+        "analytical_performance_maximum_concurrency": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Analytical Performance Maximum Concurrency"
+        },
+        "assumptions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "basis": {
+          "const": "memory-safe",
+          "default": "memory-safe",
+          "title": "Basis",
+          "type": "string"
+        },
+        "catalog_context_limit": {
+          "minimum": 1,
+          "title": "Catalog Context Limit",
+          "type": "integer"
+        },
+        "concurrency_search_capped": {
+          "default": false,
+          "title": "Concurrency Search Capped",
+          "type": "boolean"
+        },
+        "concurrency_search_upper_bound": {
+          "minimum": 1,
+          "title": "Concurrency Search Upper Bound",
+          "type": "integer"
+        },
+        "evaluated_points": {
+          "items": {
+            "$ref": "#/$defs/CapacityProbe"
+          },
+          "minItems": 1,
+          "title": "Evaluated Points",
+          "type": "array"
+        },
+        "higher_capacity_neighbor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AllocationNeighbor"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "lower_cost_neighbor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AllocationNeighbor"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "memory_safe_maximum_concurrency": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CapacityProbe"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "memory_safe_maximum_context": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CapacityProbe"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "method_id": {
+          "const": "capacity.memory-binary-search.v1",
+          "default": "capacity.memory-binary-search.v1",
+          "title": "Method Id",
+          "type": "string"
+        },
+        "requested": {
+          "$ref": "#/$defs/CapacityProbe"
+        },
+        "safe_hbm_limit_fraction": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 1.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Safe Hbm Limit Fraction"
+        }
+      },
+      "required": [
+        "requested",
+        "catalog_context_limit",
+        "safe_hbm_limit_fraction",
+        "concurrency_search_upper_bound",
+        "evaluated_points",
+        "analytical_performance_explanation"
+      ],
+      "title": "CapacityEnvelope",
+      "type": "object"
+    },
+    "CapacityProbe": {
+      "additionalProperties": false,
+      "properties": {
+        "concurrent_sequences_per_replica": {
+          "minimum": 1,
+          "title": "Concurrent Sequences Per Replica",
+          "type": "integer"
+        },
+        "conservative_hbm_utilization_fraction": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Conservative Hbm Utilization Fraction"
+        },
+        "conservative_peak_per_rank_bytes": {
+          "minimum": 0,
+          "title": "Conservative Peak Per Rank Bytes",
+          "type": "integer"
+        },
+        "context_tokens": {
+          "minimum": 1,
+          "title": "Context Tokens",
+          "type": "integer"
+        },
+        "memory_safe": {
+          "title": "Memory Safe",
+          "type": "boolean"
+        },
+        "total_concurrent_sequences": {
+          "minimum": 1,
+          "title": "Total Concurrent Sequences",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "context_tokens",
+        "total_concurrent_sequences",
+        "concurrent_sequences_per_replica",
+        "memory_safe",
+        "conservative_peak_per_rank_bytes",
+        "conservative_hbm_utilization_fraction"
+      ],
+      "title": "CapacityProbe",
+      "type": "object"
+    },
+    "CatalogVersions": {
+      "additionalProperties": false,
+      "properties": {
+        "billing": {
+          "minLength": 1,
+          "title": "Billing",
+          "type": "string"
+        },
+        "hardware": {
+          "minLength": 1,
+          "title": "Hardware",
+          "type": "string"
+        },
+        "models": {
+          "minLength": 1,
+          "title": "Models",
+          "type": "string"
+        },
+        "partitions": {
+          "minLength": 1,
+          "title": "Partitions",
+          "type": "string"
+        },
+        "runtimes": {
+          "minLength": 1,
+          "title": "Runtimes",
+          "type": "string"
+        },
+        "scoring": {
+          "minLength": 1,
+          "title": "Scoring",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hardware",
+        "partitions",
+        "billing",
+        "runtimes",
+        "models",
+        "scoring"
+      ],
+      "title": "CatalogVersions",
+      "type": "object"
+    },
+    "ConfidenceClass": {
+      "enum": [
+        "measured-exact",
+        "measured-near",
+        "calibrated",
+        "analytical",
+        "heuristic",
+        "unknown"
+      ],
+      "title": "ConfidenceClass",
+      "type": "string"
+    },
+    "ConstraintResult": {
+      "additionalProperties": false,
+      "properties": {
+        "actual": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Actual"
+        },
+        "constraint_id": {
+          "minLength": 1,
+          "title": "Constraint Id",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "remediation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Remediation"
+        },
+        "required": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Required"
+        },
+        "severity": {
+          "$ref": "#/$defs/ConstraintSeverity"
+        }
+      },
+      "required": [
+        "constraint_id",
+        "severity",
+        "passed",
+        "message"
+      ],
+      "title": "ConstraintResult",
+      "type": "object"
+    },
+    "ConstraintSeverity": {
+      "enum": [
+        "info",
+        "warning",
+        "error"
+      ],
+      "title": "ConstraintSeverity",
+      "type": "string"
+    },
+    "ContainerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Digest"
+        },
+        "family": {
+          "minLength": 1,
+          "title": "Family",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "family",
+        "path"
+      ],
+      "title": "ContainerIdentity",
+      "type": "object"
+    },
+    "CountRange": {
+      "additionalProperties": false,
+      "properties": {
+        "maximum": {
+          "minimum": 0,
+          "title": "Maximum",
+          "type": "integer"
+        },
+        "minimum": {
+          "minimum": 0,
+          "title": "Minimum",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "minimum",
+        "maximum"
+      ],
+      "title": "CountRange",
+      "type": "object"
+    },
+    "Duration": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/DurationUnit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "Duration",
+      "type": "object"
+    },
+    "DurationUnit": {
+      "enum": [
+        "seconds",
+        "minutes",
+        "hours",
+        "days"
+      ],
+      "title": "DurationUnit",
+      "type": "string"
+    },
+    "EligibilityGate": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "gate_id": {
+          "enum": [
+            "support",
+            "memory",
+            "context",
+            "quality"
+          ],
+          "title": "Gate Id",
+          "type": "string"
+        },
+        "passed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Passed"
+        }
+      },
+      "required": [
+        "gate_id",
+        "passed",
+        "explanation"
+      ],
+      "title": "EligibilityGate",
+      "type": "object"
+    },
+    "EstimateRange": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceClass"
+        },
+        "evidence_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "expected": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Expected"
+        },
+        "lower": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Lower"
+        },
+        "method_id": {
+          "minLength": 1,
+          "title": "Method Id",
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "upper": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Upper"
+        }
+      },
+      "required": [
+        "lower",
+        "expected",
+        "upper",
+        "unit",
+        "method_id",
+        "confidence"
+      ],
+      "title": "EstimateRange",
+      "type": "object"
+    },
+    "FeasibilityStatus": {
+      "enum": [
+        "feasible",
+        "conditional",
+        "infeasible"
+      ],
+      "title": "FeasibilityStatus",
+      "type": "string"
+    },
+    "FitBand": {
+      "enum": [
+        "excellent",
+        "good",
+        "marginal"
+      ],
+      "title": "FitBand",
+      "type": "string"
+    },
+    "FitEligibilityStatus": {
+      "enum": [
+        "eligible",
+        "ineligible",
+        "unknown",
+        "unscored"
+      ],
+      "title": "FitEligibilityStatus",
+      "type": "string"
+    },
+    "LatencyTargets": {
+      "additionalProperties": false,
+      "properties": {
+        "max_end_to_end_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max End To End Seconds"
+        },
+        "max_itl_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Itl Seconds"
+        },
+        "max_ttft_seconds": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Ttft Seconds"
+        }
+      },
+      "title": "LatencyTargets",
+      "type": "object"
+    },
+    "LumiVllmFitAnalysis": {
+      "additionalProperties": false,
+      "description": "Technical serveability, estimated coverage, and validated LUMI fit.",
+      "properties": {
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceClass"
+        },
+        "deployment_goodput_lcb95_per_second": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Deployment Goodput Lcb95 Per Second"
+        },
+        "eligibility": {
+          "$ref": "#/$defs/FitEligibilityStatus"
+        },
+        "equivalent_replicas_per_lumi_node": {
+          "minimum": 0,
+          "title": "Equivalent Replicas Per Lumi Node",
+          "type": "integer"
+        },
+        "estimated_capacity_confidence": {
+          "const": "heuristic",
+          "default": "heuristic",
+          "title": "Estimated Capacity Confidence",
+          "type": "string"
+        },
+        "estimated_capacity_coverage_score": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Estimated Capacity Coverage Score"
+        },
+        "estimated_formula_id": {
+          "const": "fit.lumi-vllm-analytical-coverage.v1",
+          "default": "fit.lumi-vllm-analytical-coverage.v1",
+          "title": "Estimated Formula Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "fit_score": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fit Score"
+        },
+        "formula_id": {
+          "const": "fit.lumi-vllm-goodput-lcb.v1",
+          "default": "fit.lumi-vllm-goodput-lcb.v1",
+          "title": "Formula Id",
+          "type": "string"
+        },
+        "full_node_goodput_lcb95_per_second": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Full Node Goodput Lcb95 Per Second"
+        },
+        "gates": {
+          "items": {
+            "$ref": "#/$defs/EligibilityGate"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "title": "Gates",
+          "type": "array"
+        },
+        "minimum_quality_score": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum Quality Score"
+        },
+        "model_quality": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Quality"
+        },
+        "quality_status": {
+          "$ref": "#/$defs/QualityRequirementStatus"
+        },
+        "raw_full_node_capacity_lower_per_second": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Raw Full Node Capacity Lower Per Second"
+        },
+        "target_request_rate_per_second": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Request Rate Per Second"
+        }
+      },
+      "required": [
+        "eligibility",
+        "gates",
+        "quality_status",
+        "equivalent_replicas_per_lumi_node",
+        "confidence",
+        "explanation"
+      ],
+      "title": "LumiVllmFitAnalysis",
+      "type": "object"
+    },
+    "MemoryAmount": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/MemoryUnit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "MemoryAmount",
+      "type": "object"
+    },
+    "MemoryAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "components": {
+          "items": {
+            "$ref": "#/$defs/MemoryComponent"
+          },
+          "title": "Components",
+          "type": "array"
+        },
+        "conservative_utilization_fraction": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Conservative Utilization Fraction"
+        },
+        "expected_utilization_fraction": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Expected Utilization Fraction"
+        },
+        "peak_per_rank": {
+          "$ref": "#/$defs/EstimateRange"
+        },
+        "physical_hbm_per_rank_bytes": {
+          "minimum": 1,
+          "title": "Physical Hbm Per Rank Bytes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "components",
+        "peak_per_rank",
+        "physical_hbm_per_rank_bytes",
+        "expected_utilization_fraction",
+        "conservative_utilization_fraction"
+      ],
+      "title": "MemoryAnalysis",
+      "type": "object"
+    },
+    "MemoryComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "component": {
+          "minLength": 1,
+          "title": "Component",
+          "type": "string"
+        },
+        "per_rank": {
+          "$ref": "#/$defs/EstimateRange"
+        },
+        "sharding_rule": {
+          "minLength": 1,
+          "title": "Sharding Rule",
+          "type": "string"
+        }
+      },
+      "required": [
+        "component",
+        "per_rank",
+        "sharding_rule"
+      ],
+      "title": "MemoryComponent",
+      "type": "object"
+    },
+    "MemoryUnit": {
+      "enum": [
+        "MB",
+        "GB",
+        "TB",
+        "MiB",
+        "GiB",
+        "TiB"
+      ],
+      "title": "MemoryUnit",
+      "type": "string"
+    },
+    "ModelCapability": {
+      "enum": [
+        "text-generation",
+        "chat",
+        "coding",
+        "reasoning",
+        "embedding",
+        "tool-use"
+      ],
+      "title": "ModelCapability",
+      "type": "string"
+    },
+    "ModelPlanGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "alternative_plan_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Alternative Plan Ids",
+          "type": "array"
+        },
+        "best_plan_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Best Plan Id"
+        },
+        "diagnostic_plan_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Diagnostic Plan Id"
+        },
+        "feasible_plan_count": {
+          "minimum": 0,
+          "title": "Feasible Plan Count",
+          "type": "integer"
+        },
+        "model_id": {
+          "pattern": "^.+/.+$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "suitability": {
+          "$ref": "#/$defs/ModelSuitabilityEvidence"
+        }
+      },
+      "required": [
+        "model_id",
+        "feasible_plan_count",
+        "suitability"
+      ],
+      "title": "ModelPlanGroup",
+      "type": "object"
+    },
+    "ModelSelector": {
+      "additionalProperties": false,
+      "properties": {
+        "allow_gated": {
+          "default": false,
+          "title": "Allow Gated",
+          "type": "boolean"
+        },
+        "capabilities": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModelCapability"
+          },
+          "title": "Capabilities",
+          "type": "array"
+        },
+        "exact_model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Model"
+        },
+        "exclude_patterns": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclude Patterns",
+          "type": "array"
+        },
+        "families": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Families",
+          "type": "array"
+        },
+        "include_patterns": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Include Patterns",
+          "type": "array"
+        },
+        "languages": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Languages",
+          "type": "array"
+        },
+        "licenses": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Licenses",
+          "type": "array"
+        },
+        "maximum_parameters": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Parameters"
+        },
+        "minimum_parameters": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum Parameters"
+        },
+        "models": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Models",
+          "type": "array"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "use_case": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UseCase"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "ModelSelector",
+      "type": "object"
+    },
+    "ModelSuitabilityEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceClass"
+        },
+        "evidence_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Score"
+        },
+        "use_case": {
+          "$ref": "#/$defs/UseCase"
+        }
+      },
+      "required": [
+        "use_case",
+        "confidence",
+        "explanation"
+      ],
+      "title": "ModelSuitabilityEvidence",
+      "type": "object"
+    },
+    "ObjectivePlanRank": {
+      "additionalProperties": false,
+      "properties": {
+        "component_contributions": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ]
+          },
+          "title": "Component Contributions",
+          "type": "object"
+        },
+        "component_weights": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ]
+          },
+          "title": "Component Weights",
+          "type": "object"
+        },
+        "composite_score": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Composite Score"
+        },
+        "model_id": {
+          "pattern": "^.+/.+$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "plan_id": {
+          "minLength": 1,
+          "title": "Plan Id",
+          "type": "string"
+        },
+        "rank": {
+          "minimum": 1,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "rank_change_from_requested": {
+          "default": 0,
+          "title": "Rank Change From Requested",
+          "type": "integer"
+        },
+        "serving_targets_satisfied": {
+          "title": "Serving Targets Satisfied",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "rank",
+        "plan_id",
+        "model_id",
+        "composite_score",
+        "serving_targets_satisfied",
+        "component_weights",
+        "component_contributions"
+      ],
+      "title": "ObjectivePlanRank",
+      "type": "object"
+    },
+    "ObjectiveProfile": {
+      "enum": [
+        "balanced",
+        "interactive",
+        "throughput",
+        "budget",
+        "quality-first"
+      ],
+      "title": "ObjectiveProfile",
+      "type": "string"
+    },
+    "ObjectiveSensitivity": {
+      "additionalProperties": false,
+      "properties": {
+        "feasible_candidate_count": {
+          "minimum": 0,
+          "title": "Feasible Candidate Count",
+          "type": "integer"
+        },
+        "objective": {
+          "$ref": "#/$defs/ObjectiveProfile"
+        },
+        "rank_stable_after_excluding_unavailable_components": {
+          "title": "Rank Stable After Excluding Unavailable Components",
+          "type": "boolean"
+        },
+        "rankings": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ObjectivePlanRank"
+          },
+          "title": "Rankings",
+          "type": "array"
+        },
+        "unavailable_components": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Unavailable Components",
+          "type": "array"
+        },
+        "unavailable_components_excluded": {
+          "title": "Unavailable Components Excluded",
+          "type": "boolean"
+        },
+        "winner_changed_from_requested": {
+          "title": "Winner Changed From Requested",
+          "type": "boolean"
+        },
+        "winner_plan_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Winner Plan Id"
+        }
+      },
+      "required": [
+        "objective",
+        "winner_changed_from_requested",
+        "feasible_candidate_count",
+        "unavailable_components_excluded",
+        "rank_stable_after_excluding_unavailable_components"
+      ],
+      "title": "ObjectiveSensitivity",
+      "type": "object"
+    },
+    "PerformanceAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate_output_tokens_per_second": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EstimateRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "inter_token_latency_seconds": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EstimateRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "requests_per_second": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EstimateRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "ttft_seconds": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EstimateRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "PerformanceAnalysis",
+      "type": "object"
+    },
+    "PlanAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "assumptions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "billing": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BillingAnalysis"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "composite_score": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Composite Score"
+        },
+        "constraints": {
+          "items": {
+            "$ref": "#/$defs/ConstraintResult"
+          },
+          "title": "Constraints",
+          "type": "array"
+        },
+        "feasibility": {
+          "$ref": "#/$defs/FeasibilityStatus"
+        },
+        "fit_band": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FitBand"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "memory": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MemoryAnalysis"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "overall_confidence": {
+          "$ref": "#/$defs/ConfidenceClass"
+        },
+        "performance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PerformanceAnalysis"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "scores": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ScoreComponent"
+          },
+          "title": "Scores",
+          "type": "array"
+        }
+      },
+      "required": [
+        "feasibility",
+        "constraints",
+        "overall_confidence"
+      ],
+      "title": "PlanAnalysis",
+      "type": "object"
+    },
+    "PlanComparison": {
+      "additionalProperties": false,
+      "properties": {
+        "compared_feasibility": {
+          "$ref": "#/$defs/FeasibilityStatus"
+        },
+        "compared_model_id": {
+          "pattern": "^.+/.+$",
+          "title": "Compared Model Id",
+          "type": "string"
+        },
+        "compared_plan_id": {
+          "minLength": 1,
+          "title": "Compared Plan Id",
+          "type": "string"
+        },
+        "compared_rank": {
+          "minimum": 2,
+          "title": "Compared Rank",
+          "type": "integer"
+        },
+        "compared_targets_satisfied": {
+          "title": "Compared Targets Satisfied",
+          "type": "boolean"
+        },
+        "component_deltas": {
+          "items": {
+            "$ref": "#/$defs/ScoreComponentDelta"
+          },
+          "title": "Component Deltas",
+          "type": "array"
+        },
+        "decisive_component_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decisive Component Id"
+        },
+        "decisive_explanation": {
+          "minLength": 1,
+          "title": "Decisive Explanation",
+          "type": "string"
+        },
+        "decisive_factor": {
+          "enum": [
+            "feasibility",
+            "serving-targets",
+            "composite-score",
+            "confidence",
+            "billing",
+            "stable-plan-id"
+          ],
+          "title": "Decisive Factor",
+          "type": "string"
+        },
+        "gpu_hours_delta": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gpu Hours Delta"
+        },
+        "hbm_headroom_delta_fraction": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hbm Headroom Delta Fraction"
+        },
+        "memory_safe_concurrency_delta": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Memory Safe Concurrency Delta"
+        },
+        "objective": {
+          "$ref": "#/$defs/ObjectiveProfile"
+        },
+        "quality_comparable": {
+          "title": "Quality Comparable",
+          "type": "boolean"
+        },
+        "quality_explanation": {
+          "minLength": 1,
+          "title": "Quality Explanation",
+          "type": "string"
+        },
+        "runtime_compatibility_delta": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runtime Compatibility Delta"
+        },
+        "winner_feasibility": {
+          "$ref": "#/$defs/FeasibilityStatus"
+        },
+        "winner_model_id": {
+          "pattern": "^.+/.+$",
+          "title": "Winner Model Id",
+          "type": "string"
+        },
+        "winner_plan_id": {
+          "minLength": 1,
+          "title": "Winner Plan Id",
+          "type": "string"
+        },
+        "winner_rank": {
+          "minimum": 1,
+          "title": "Winner Rank",
+          "type": "integer"
+        },
+        "winner_targets_satisfied": {
+          "title": "Winner Targets Satisfied",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "objective",
+        "winner_plan_id",
+        "compared_plan_id",
+        "winner_rank",
+        "compared_rank",
+        "winner_model_id",
+        "compared_model_id",
+        "winner_feasibility",
+        "compared_feasibility",
+        "winner_targets_satisfied",
+        "compared_targets_satisfied",
+        "component_deltas",
+        "quality_comparable",
+        "quality_explanation",
+        "decisive_factor",
+        "decisive_explanation"
+      ],
+      "title": "PlanComparison",
+      "type": "object"
+    },
+    "QualityRequirementStatus": {
+      "enum": [
+        "not-required",
+        "pass",
+        "fail",
+        "unknown"
+      ],
+      "title": "QualityRequirementStatus",
+      "type": "string"
+    },
+    "ReplicaRouting": {
+      "enum": [
+        "single",
+        "round-robin"
+      ],
+      "title": "ReplicaRouting",
+      "type": "string"
+    },
+    "ResourceEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "allow_multi_node": {
+          "default": false,
+          "title": "Allow Multi Node",
+          "type": "boolean"
+        },
+        "allow_partial_node": {
+          "default": true,
+          "title": "Allow Partial Node",
+          "type": "boolean"
+        },
+        "cpu_cores_per_node": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Cores Per Node"
+        },
+        "cpu_memory_per_node": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MemoryAmount"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "enabled_partitions": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Enabled Partitions",
+          "type": "array"
+        },
+        "gcds": {
+          "$ref": "#/$defs/CountRange"
+        },
+        "maximum_gpu_hours": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Gpu Hours"
+        },
+        "nodes": {
+          "$ref": "#/$defs/CountRange",
+          "default": {
+            "maximum": 1,
+            "minimum": 1
+          }
+        },
+        "partition": {
+          "default": "auto",
+          "title": "Partition",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "walltime": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Duration"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "gcds"
+      ],
+      "title": "ResourceEnvelope",
+      "type": "object"
+    },
+    "RuntimeOptions": {
+      "additionalProperties": false,
+      "properties": {
+        "enable_prefix_caching": {
+          "default": false,
+          "title": "Enable Prefix Caching",
+          "type": "boolean"
+        },
+        "enforce_eager": {
+          "default": false,
+          "title": "Enforce Eager",
+          "type": "boolean"
+        },
+        "gpu_memory_utilization": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 1.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Gpu Memory Utilization"
+        },
+        "kv_cache_dtype": {
+          "minLength": 1,
+          "title": "Kv Cache Dtype",
+          "type": "string"
+        },
+        "max_batched_tokens": {
+          "minimum": 1,
+          "title": "Max Batched Tokens",
+          "type": "integer"
+        },
+        "max_concurrent_sequences": {
+          "minimum": 1,
+          "title": "Max Concurrent Sequences",
+          "type": "integer"
+        },
+        "max_model_length": {
+          "minimum": 1,
+          "title": "Max Model Length",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "max_model_length",
+        "max_concurrent_sequences",
+        "max_batched_tokens",
+        "gpu_memory_utilization",
+        "kv_cache_dtype"
+      ],
+      "title": "RuntimeOptions",
+      "type": "object"
+    },
+    "ScoreComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "component_id": {
+          "minLength": 1,
+          "title": "Component Id",
+          "type": "string"
+        },
+        "confidence": {
+          "$ref": "#/$defs/ConfidenceClass"
+        },
+        "evidence_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "formula_id": {
+          "default": "score.unspecified",
+          "minLength": 1,
+          "title": "Formula Id",
+          "type": "string"
+        },
+        "raw_inputs": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Raw Inputs",
+          "type": "object"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "weight": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Weight"
+        },
+        "weighted_contribution": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Weighted Contribution"
+        }
+      },
+      "required": [
+        "component_id",
+        "weight",
+        "weighted_contribution",
+        "explanation",
+        "confidence"
+      ],
+      "title": "ScoreComponent",
+      "type": "object"
+    },
+    "ScoreComponentDelta": {
+      "additionalProperties": false,
+      "properties": {
+        "comparable": {
+          "title": "Comparable",
+          "type": "boolean"
+        },
+        "compared_contribution": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Compared Contribution"
+        },
+        "compared_value": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Compared Value"
+        },
+        "component_id": {
+          "minLength": 1,
+          "title": "Component Id",
+          "type": "string"
+        },
+        "contribution_delta": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Contribution Delta"
+        },
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "value_delta": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value Delta"
+        },
+        "winner_contribution": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Winner Contribution"
+        },
+        "winner_value": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Winner Value"
+        }
+      },
+      "required": [
+        "component_id",
+        "winner_contribution",
+        "compared_contribution",
+        "contribution_delta",
+        "comparable",
+        "explanation"
+      ],
+      "title": "ScoreComponentDelta",
+      "type": "object"
+    },
+    "ServingMode": {
+      "enum": [
+        "online",
+        "batch"
+      ],
+      "title": "ServingMode",
+      "type": "string"
+    },
+    "ServingPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "minLength": 1,
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "container": {
+          "$ref": "#/$defs/ContainerIdentity"
+        },
+        "cpu_cores_per_node": {
+          "minimum": 1,
+          "title": "Cpu Cores Per Node",
+          "type": "integer"
+        },
+        "cpu_memory_per_node": {
+          "$ref": "#/$defs/MemoryAmount"
+        },
+        "gcds_per_node": {
+          "minimum": 1,
+          "title": "Gcds Per Node",
+          "type": "integer"
+        },
+        "model_id": {
+          "pattern": "^.+/.+$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_revision": {
+          "minLength": 1,
+          "title": "Model Revision",
+          "type": "string"
+        },
+        "nodes": {
+          "minimum": 1,
+          "title": "Nodes",
+          "type": "integer"
+        },
+        "partition": {
+          "minLength": 1,
+          "title": "Partition",
+          "type": "string"
+        },
+        "pipeline_parallel": {
+          "minimum": 1,
+          "title": "Pipeline Parallel",
+          "type": "integer"
+        },
+        "quantization": {
+          "minLength": 1,
+          "title": "Quantization",
+          "type": "string"
+        },
+        "ranks_per_node": {
+          "minimum": 1,
+          "title": "Ranks Per Node",
+          "type": "integer"
+        },
+        "replicas": {
+          "minimum": 1,
+          "title": "Replicas",
+          "type": "integer"
+        },
+        "request_routing": {
+          "$ref": "#/$defs/ReplicaRouting",
+          "default": "single"
+        },
+        "runtime_id": {
+          "minLength": 1,
+          "title": "Runtime Id",
+          "type": "string"
+        },
+        "runtime_options": {
+          "$ref": "#/$defs/RuntimeOptions"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "tensor_parallel": {
+          "minimum": 1,
+          "title": "Tensor Parallel",
+          "type": "integer"
+        },
+        "threads_per_rank": {
+          "minimum": 1,
+          "title": "Threads Per Rank",
+          "type": "integer"
+        },
+        "walltime": {
+          "$ref": "#/$defs/Duration"
+        }
+      },
+      "required": [
+        "model_id",
+        "model_revision",
+        "artifact_id",
+        "quantization",
+        "runtime_id",
+        "container",
+        "runtime_options",
+        "partition",
+        "nodes",
+        "gcds_per_node",
+        "cpu_cores_per_node",
+        "cpu_memory_per_node",
+        "tensor_parallel",
+        "pipeline_parallel",
+        "replicas",
+        "ranks_per_node",
+        "threads_per_rank",
+        "walltime"
+      ],
+      "title": "ServingPlan",
+      "type": "object"
+    },
+    "ServingRequirements": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_quantizations": {
+          "default": [
+            "bf16",
+            "fp16"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Quantizations",
+          "type": "array"
+        },
+        "allowed_runtimes": {
+          "default": [
+            "vllm"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Runtimes",
+          "type": "array"
+        },
+        "batch_request_count": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Batch Request Count"
+        },
+        "completion_deadline": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Duration"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "concurrent_sequences": {
+          "minimum": 1,
+          "title": "Concurrent Sequences",
+          "type": "integer"
+        },
+        "input_tokens": {
+          "minimum": 1,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "latency_targets": {
+          "$ref": "#/$defs/LatencyTargets",
+          "default": {
+            "max_end_to_end_seconds": null,
+            "max_itl_seconds": null,
+            "max_ttft_seconds": null
+          }
+        },
+        "max_model_length": {
+          "minimum": 1,
+          "title": "Max Model Length",
+          "type": "integer"
+        },
+        "max_output_tokens": {
+          "minimum": 1,
+          "title": "Max Output Tokens",
+          "type": "integer"
+        },
+        "maximum_failure_rate": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Failure Rate"
+        },
+        "minimum_context_coverage": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 1.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "default": "1",
+          "title": "Minimum Context Coverage"
+        },
+        "minimum_hbm_headroom_fraction": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "default": "0.15",
+          "title": "Minimum Hbm Headroom Fraction"
+        },
+        "minimum_quality_score": {
+          "anyOf": [
+            {
+              "maximum": 100.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum Quality Score"
+        },
+        "mode": {
+          "$ref": "#/$defs/ServingMode"
+        },
+        "objective": {
+          "$ref": "#/$defs/ObjectiveProfile",
+          "default": "balanced"
+        },
+        "request_arrival_rate_per_second": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Arrival Rate Per Second"
+        },
+        "required_slo_attainment": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 1.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Required Slo Attainment"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "service_duration": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Duration"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "throughput_targets": {
+          "$ref": "#/$defs/ThroughputTargets",
+          "default": {
+            "min_input_tokens_per_second": null,
+            "min_output_tokens_per_second": null,
+            "min_requests_per_second": null
+          }
+        },
+        "token_length_distribution": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/TokenLengthPoint"
+          },
+          "title": "Token Length Distribution",
+          "type": "array"
+        },
+        "use_case": {
+          "$ref": "#/$defs/UseCase",
+          "default": "general"
+        }
+      },
+      "required": [
+        "mode",
+        "input_tokens",
+        "max_output_tokens",
+        "max_model_length",
+        "concurrent_sequences"
+      ],
+      "title": "ServingRequirements",
+      "type": "object"
+    },
+    "ThroughputTargets": {
+      "additionalProperties": false,
+      "properties": {
+        "min_input_tokens_per_second": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Input Tokens Per Second"
+        },
+        "min_output_tokens_per_second": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Output Tokens Per Second"
+        },
+        "min_requests_per_second": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Requests Per Second"
+        }
+      },
+      "title": "ThroughputTargets",
+      "type": "object"
+    },
+    "TokenLengthPoint": {
+      "additionalProperties": false,
+      "description": "One weighted point in a declared prompt/output-length distribution.",
+      "properties": {
+        "input_tokens": {
+          "minimum": 1,
+          "title": "Input Tokens",
+          "type": "integer"
+        },
+        "output_tokens": {
+          "minimum": 1,
+          "title": "Output Tokens",
+          "type": "integer"
+        },
+        "probability": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 1.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Probability"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "probability"
+      ],
+      "title": "TokenLengthPoint",
+      "type": "object"
+    },
+    "UseCase": {
+      "enum": [
+        "general",
+        "chat",
+        "coding",
+        "reasoning",
+        "embedding",
+        "custom"
+      ],
+      "title": "UseCase",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "analysis_fingerprint": {
+      "minLength": 1,
+      "title": "Analysis Fingerprint",
+      "type": "string"
+    },
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/CandidateResult"
+      },
+      "title": "Candidates",
+      "type": "array"
+    },
+    "catalog_versions": {
+      "$ref": "#/$defs/CatalogVersions"
+    },
+    "comparisons": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/PlanComparison"
+      },
+      "title": "Comparisons",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "model_groups": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ModelPlanGroup"
+      },
+      "title": "Model Groups",
+      "type": "array"
+    },
+    "model_selector": {
+      "$ref": "#/$defs/ModelSelector"
+    },
+    "objective_sensitivity": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ObjectiveSensitivity"
+      },
+      "title": "Objective Sensitivity",
+      "type": "array"
+    },
+    "resources": {
+      "$ref": "#/$defs/ResourceEnvelope"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "search_complete": {
+      "title": "Search Complete",
+      "type": "boolean"
+    },
+    "search_notes": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Search Notes",
+      "type": "array"
+    },
+    "serving": {
+      "$ref": "#/$defs/ServingRequirements"
+    },
+    "tool_version": {
+      "minLength": 1,
+      "title": "Tool Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "tool_version",
+    "generated_at",
+    "analysis_fingerprint",
+    "resources",
+    "serving",
+    "model_selector",
+    "catalog_versions",
+    "candidates",
+    "search_complete"
+  ],
+  "title": "RecommendationBundle",
+  "type": "object"
+}

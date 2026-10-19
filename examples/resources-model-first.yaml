@@ -1,0 +1,16 @@
+schema_version: "1.0"
+partition: auto
+nodes:
+  minimum: 1
+  maximum: 2
+gcds:
+  minimum: 1
+  maximum: 16
+walltime: 12 hours
+maximum_gpu_hours: 48
+allow_partial_node: true
+allow_multi_node: true
+enabled_partitions:
+  - small-g
+  - standard-g
+

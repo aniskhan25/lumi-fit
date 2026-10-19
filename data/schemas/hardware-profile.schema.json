@@ -1,0 +1,340 @@
+{
+  "$defs": {
+    "CatalogMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "last_verified_at": {
+          "format": "date-time",
+          "title": "Last Verified At",
+          "type": "string"
+        },
+        "profile_version": {
+          "minLength": 1,
+          "title": "Profile Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        },
+        "valid_from": {
+          "format": "date",
+          "title": "Valid From",
+          "type": "string"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        }
+      },
+      "required": [
+        "profile_version",
+        "valid_from",
+        "last_verified_at",
+        "sources"
+      ],
+      "title": "CatalogMetadata",
+      "type": "object"
+    },
+    "CpuProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "memory_per_node": {
+          "$ref": "#/$defs/MemoryAmount"
+        },
+        "model": {
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "numa_domains": {
+          "minimum": 1,
+          "title": "Numa Domains",
+          "type": "integer"
+        },
+        "physical_cores": {
+          "minimum": 1,
+          "title": "Physical Cores",
+          "type": "integer"
+        },
+        "schedulable_cores": {
+          "minimum": 1,
+          "title": "Schedulable Cores",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "model",
+        "physical_cores",
+        "schedulable_cores",
+        "numa_domains",
+        "memory_per_node"
+      ],
+      "title": "CpuProfile",
+      "type": "object"
+    },
+    "GcdProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "accelerator_architecture": {
+          "minLength": 1,
+          "title": "Accelerator Architecture",
+          "type": "string"
+        },
+        "gcds_per_module": {
+          "minimum": 1,
+          "title": "Gcds Per Module",
+          "type": "integer"
+        },
+        "hbm_per_gcd": {
+          "$ref": "#/$defs/MemoryAmount"
+        },
+        "model": {
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "modules_per_node": {
+          "minimum": 1,
+          "title": "Modules Per Node",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "accelerator_architecture",
+        "model",
+        "gcds_per_module",
+        "modules_per_node",
+        "hbm_per_gcd"
+      ],
+      "title": "GcdProfile",
+      "type": "object"
+    },
+    "MemoryAmount": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/MemoryUnit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "MemoryAmount",
+      "type": "object"
+    },
+    "MemoryUnit": {
+      "enum": [
+        "MB",
+        "GB",
+        "TB",
+        "MiB",
+        "GiB",
+        "TiB"
+      ],
+      "title": "MemoryUnit",
+      "type": "string"
+    },
+    "NetworkProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "endpoints_per_node": {
+          "minimum": 1,
+          "title": "Endpoints Per Node",
+          "type": "integer"
+        },
+        "fabric": {
+          "minLength": 1,
+          "title": "Fabric",
+          "type": "string"
+        },
+        "peak_bidirectional_bandwidth_per_endpoint_gb_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Peak Bidirectional Bandwidth Per Endpoint Gb S"
+        }
+      },
+      "required": [
+        "fabric",
+        "endpoints_per_node",
+        "peak_bidirectional_bandwidth_per_endpoint_gb_s"
+      ],
+      "title": "NetworkProfile",
+      "type": "object"
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "SourceReference",
+      "type": "object"
+    },
+    "TopologyLink": {
+      "additionalProperties": false,
+      "properties": {
+        "notes": {
+          "minLength": 1,
+          "title": "Notes",
+          "type": "string"
+        },
+        "peak_bidirectional_bandwidth_gb_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Peak Bidirectional Bandwidth Gb S"
+        },
+        "scope": {
+          "minLength": 1,
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scope",
+        "peak_bidirectional_bandwidth_gb_s",
+        "notes"
+      ],
+      "title": "TopologyLink",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "cpu": {
+      "$ref": "#/$defs/CpuProfile"
+    },
+    "display_name": {
+      "minLength": 1,
+      "title": "Display Name",
+      "type": "string"
+    },
+    "gcd": {
+      "$ref": "#/$defs/GcdProfile"
+    },
+    "kind": {
+      "const": "hardware",
+      "default": "hardware",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/CatalogMetadata"
+    },
+    "network": {
+      "$ref": "#/$defs/NetworkProfile"
+    },
+    "node_count": {
+      "minimum": 1,
+      "title": "Node Count",
+      "type": "integer"
+    },
+    "system_id": {
+      "minLength": 1,
+      "title": "System Id",
+      "type": "string"
+    },
+    "topology_links": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/TopologyLink"
+      },
+      "title": "Topology Links",
+      "type": "array"
+    }
+  },
+  "required": [
+    "metadata",
+    "system_id",
+    "display_name",
+    "node_count",
+    "gcd",
+    "cpu",
+    "network"
+  ],
+  "title": "HardwareProfile",
+  "type": "object"
+}

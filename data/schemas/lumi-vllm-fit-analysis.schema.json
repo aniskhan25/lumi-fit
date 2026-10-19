@@ -1,0 +1,290 @@
+{
+  "$defs": {
+    "ConfidenceClass": {
+      "enum": [
+        "measured-exact",
+        "measured-near",
+        "calibrated",
+        "analytical",
+        "heuristic",
+        "unknown"
+      ],
+      "title": "ConfidenceClass",
+      "type": "string"
+    },
+    "EligibilityGate": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "gate_id": {
+          "enum": [
+            "support",
+            "memory",
+            "context",
+            "quality"
+          ],
+          "title": "Gate Id",
+          "type": "string"
+        },
+        "passed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Passed"
+        }
+      },
+      "required": [
+        "gate_id",
+        "passed",
+        "explanation"
+      ],
+      "title": "EligibilityGate",
+      "type": "object"
+    },
+    "FitEligibilityStatus": {
+      "enum": [
+        "eligible",
+        "ineligible",
+        "unknown",
+        "unscored"
+      ],
+      "title": "FitEligibilityStatus",
+      "type": "string"
+    },
+    "QualityRequirementStatus": {
+      "enum": [
+        "not-required",
+        "pass",
+        "fail",
+        "unknown"
+      ],
+      "title": "QualityRequirementStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Technical serveability, estimated coverage, and validated LUMI fit.",
+  "properties": {
+    "confidence": {
+      "$ref": "#/$defs/ConfidenceClass"
+    },
+    "deployment_goodput_lcb95_per_second": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Deployment Goodput Lcb95 Per Second"
+    },
+    "eligibility": {
+      "$ref": "#/$defs/FitEligibilityStatus"
+    },
+    "equivalent_replicas_per_lumi_node": {
+      "minimum": 0,
+      "title": "Equivalent Replicas Per Lumi Node",
+      "type": "integer"
+    },
+    "estimated_capacity_confidence": {
+      "const": "heuristic",
+      "default": "heuristic",
+      "title": "Estimated Capacity Confidence",
+      "type": "string"
+    },
+    "estimated_capacity_coverage_score": {
+      "anyOf": [
+        {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Estimated Capacity Coverage Score"
+    },
+    "estimated_formula_id": {
+      "const": "fit.lumi-vllm-analytical-coverage.v1",
+      "default": "fit.lumi-vllm-analytical-coverage.v1",
+      "title": "Estimated Formula Id",
+      "type": "string"
+    },
+    "evidence_ids": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Ids",
+      "type": "array"
+    },
+    "explanation": {
+      "minLength": 1,
+      "title": "Explanation",
+      "type": "string"
+    },
+    "fit_score": {
+      "anyOf": [
+        {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Fit Score"
+    },
+    "formula_id": {
+      "const": "fit.lumi-vllm-goodput-lcb.v1",
+      "default": "fit.lumi-vllm-goodput-lcb.v1",
+      "title": "Formula Id",
+      "type": "string"
+    },
+    "full_node_goodput_lcb95_per_second": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Full Node Goodput Lcb95 Per Second"
+    },
+    "gates": {
+      "items": {
+        "$ref": "#/$defs/EligibilityGate"
+      },
+      "maxItems": 4,
+      "minItems": 4,
+      "title": "Gates",
+      "type": "array"
+    },
+    "minimum_quality_score": {
+      "anyOf": [
+        {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Minimum Quality Score"
+    },
+    "model_quality": {
+      "anyOf": [
+        {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model Quality"
+    },
+    "quality_status": {
+      "$ref": "#/$defs/QualityRequirementStatus"
+    },
+    "raw_full_node_capacity_lower_per_second": {
+      "anyOf": [
+        {
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Raw Full Node Capacity Lower Per Second"
+    },
+    "target_request_rate_per_second": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0.0,
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Request Rate Per Second"
+    }
+  },
+  "required": [
+    "eligibility",
+    "gates",
+    "quality_status",
+    "equivalent_replicas_per_lumi_node",
+    "confidence",
+    "explanation"
+  ],
+  "title": "LumiVllmFitAnalysis",
+  "type": "object"
+}

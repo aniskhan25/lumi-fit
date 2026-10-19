@@ -1,0 +1,41 @@
+kind: runtimes
+metadata:
+  schema_version: "1.0"
+  profile_version: "2026-08-09.1"
+  valid_from: 2026-08-09
+  last_verified_at: 2026-08-09T00:00:00+03:00
+  sources:
+    - title: LUMI AI Factory AI Software Environment
+      url: https://docs.lumi-supercomputer.eu/laif/software/ai-environment/
+    - title: LUMI self-hosted inference overview
+      url: https://docs.lumi-supercomputer.eu/laif/inference/
+    - title: LUMI container jobs
+      url: https://docs.lumi-supercomputer.eu/runjobs/scheduled-jobs/container-jobs/
+system_id: lumi-g
+runtimes:
+  - runtime_id: vllm-laif
+    runtime_name: vLLM in the LUMI AI Factory full container
+    engine: vllm
+    container_family: lumi-multitorch-full
+    container_path_pattern: /appl/local/laifs/containers/lumi-multitorch-*/lumi-multitorch-full-*.sif
+    verified_container_path: >-
+      /appl/local/laifs/containers/lumi-multitorch-u24r64f21m43t29-20260124_092648/lumi-multitorch-full-u24r64f21m43t29-20260124_092648.sif
+    accelerator_architectures:
+      - gfx90a
+    serving_modes:
+      - online
+      - batch
+    tensor_parallel: supported
+    pipeline_parallel: unknown
+    multi_node: conditional
+    quantizations:
+      - name: bf16
+        support: supported
+        notes: Native baseline precision for the initial planner.
+      - name: fp16
+        support: supported
+        notes: Supported baseline precision; model-specific validation is still required.
+    notes:
+      - Resolve the concrete immutable container path during a reviewed catalog refresh.
+      - Multi-node recommendations require an exact container and network validation benchmark.
+      - Self-hosted endpoints are not reachable from outside LUMI.

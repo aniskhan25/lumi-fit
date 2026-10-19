@@ -1,0 +1,7 @@
+schema_version: "1.0"
+include_patterns:
+  - Qwen/*
+  - mistralai/*
+use_case: coding
+allow_gated: false
+

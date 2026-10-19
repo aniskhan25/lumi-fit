@@ -1,0 +1,489 @@
+kind: models
+metadata:
+  schema_version: "1.0"
+  profile_version: "2026-09-07.1"
+  valid_from: 2026-09-07
+  last_verified_at: 2026-09-07T00:00:00+03:00
+  sources:
+    - title: Qwen3-8B Hugging Face repository
+      url: https://huggingface.co/Qwen/Qwen3-8B
+    - title: Qwen3-32B Hugging Face repository
+      url: https://huggingface.co/Qwen/Qwen3-32B
+    - title: Phi-4-mini-instruct Hugging Face repository
+      url: https://huggingface.co/microsoft/Phi-4-mini-instruct
+    - title: Mistral-7B-Instruct-v0.3 Hugging Face repository
+      url: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3
+    - title: DeepSeek-R1-Distill-Qwen-14B Hugging Face repository
+      url: https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+    - title: Qwen3-30B-A3B Hugging Face repository
+      url: https://huggingface.co/Qwen/Qwen3-30B-A3B
+    - title: Qwen3-235B-A22B Hugging Face repository
+      url: https://huggingface.co/Qwen/Qwen3-235B-A22B
+    - title: vLLM supported models
+      url: https://docs.vllm.ai/en/stable/models/supported_models/
+    - title: SmolLM2-1.7B-Instruct Hugging Face repository
+      url: https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct
+    - title: Granite-3.1-8B-Instruct Hugging Face repository
+      url: https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
+    - title: OLMo-2-1124-13B-Instruct Hugging Face repository
+      url: https://huggingface.co/allenai/OLMo-2-1124-13B-Instruct
+    - title: Mixtral-8x22B-Instruct-v0.1 Hugging Face repository
+      url: https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1
+    - title: Mixtral 8x22B active-parameter announcement
+      url: https://mistral.ai/news/mixtral-8x22b
+models:
+  - model_id: microsoft/Phi-4-mini-instruct
+    revision: cfbefacb99257ffa30c83adab238a50856ac3083
+    family: phi3
+    release_date: 2025-02-19
+    license: mit
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - coding
+    languages:
+      - ar
+      - zh
+      - cs
+      - da
+      - nl
+      - en
+      - fi
+      - fr
+      - de
+      - he
+      - hu
+      - it
+      - ja
+      - ko
+      - "no"
+      - pl
+      - pt
+      - ru
+      - es
+      - sv
+      - th
+      - tr
+      - uk
+    architecture:
+      architecture_name: Phi3ForCausalLM
+      total_parameters: 3836021760
+      layers: 32
+      hidden_size: 3072
+      intermediate_size: 8192
+      attention_heads: 24
+      kv_heads: 8
+      head_dimension: 128
+      vocabulary_size: 200064
+      context_length: 131072
+      tie_word_embeddings: true
+    source_url: https://huggingface.co/microsoft/Phi-4-mini-instruct
+  - model_id: mistralai/Mistral-7B-Instruct-v0.3
+    revision: c170c708c41dac9275d15a8fff4eca08d52bab71
+    family: mistral
+    release_date: 2024-05-22
+    license: apache-2.0
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - tool-use
+    languages:
+      - en
+    architecture:
+      architecture_name: MistralForCausalLM
+      total_parameters: 7248023552
+      layers: 32
+      hidden_size: 4096
+      intermediate_size: 14336
+      attention_heads: 32
+      kv_heads: 8
+      head_dimension: 128
+      vocabulary_size: 32768
+      context_length: 32768
+      tie_word_embeddings: false
+    source_url: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3
+  - model_id: Qwen/Qwen3-8B
+    revision: b968826d9c46dd6066d109eabc6255188de91218
+    family: qwen3
+    release_date: 2025-04-27
+    license: apache-2.0
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - coding
+      - reasoning
+    languages:
+      - en
+      - zh
+    architecture:
+      architecture_name: Qwen3ForCausalLM
+      total_parameters: 8190735360
+      layers: 36
+      hidden_size: 4096
+      intermediate_size: 12288
+      attention_heads: 32
+      kv_heads: 8
+      head_dimension: 128
+      vocabulary_size: 151936
+      context_length: 40960
+      tie_word_embeddings: false
+    source_url: https://huggingface.co/Qwen/Qwen3-8B
+  - model_id: deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+    revision: 1df8507178afcc1bef68cd8c393f61a886323761
+    family: qwen2
+    release_date: 2025-01-20
+    license: mit
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - reasoning
+    languages:
+      - en
+      - zh
+    architecture:
+      architecture_name: Qwen2ForCausalLM
+      total_parameters: 14770033664
+      layers: 48
+      hidden_size: 5120
+      intermediate_size: 13824
+      attention_heads: 40
+      kv_heads: 8
+      head_dimension: 128
+      vocabulary_size: 152064
+      context_length: 131072
+      tie_word_embeddings: false
+    source_url: https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+  - model_id: Qwen/Qwen3-30B-A3B
+    revision: ad44e777bcd18fa416d9da3bd8f70d33ebb85d39
+    family: qwen3_moe
+    release_date: 2025-04-27
+    license: apache-2.0
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - coding
+      - reasoning
+    languages:
+      - en
+      - zh
+    architecture:
+      architecture_name: Qwen3MoeForCausalLM
+      total_parameters: 30532122624
+      active_parameters: 3300000000
+      layers: 48
+      hidden_size: 2048
+      intermediate_size: 6144
+      attention_heads: 32
+      kv_heads: 4
+      head_dimension: 128
+      vocabulary_size: 151936
+      context_length: 40960
+      tie_word_embeddings: false
+      moe_experts: 128
+      active_experts_per_token: 8
+    source_url: https://huggingface.co/Qwen/Qwen3-30B-A3B
+  - model_id: Qwen/Qwen3-32B
+    revision: 9216db5781bf21249d130ec9da846c4624c16137
+    family: qwen3
+    release_date: 2025-04-27
+    license: apache-2.0
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - coding
+      - reasoning
+    languages:
+      - en
+      - zh
+    architecture:
+      architecture_name: Qwen3ForCausalLM
+      total_parameters: 32762123264
+      layers: 64
+      hidden_size: 5120
+      intermediate_size: 25600
+      attention_heads: 64
+      kv_heads: 8
+      head_dimension: 128
+      vocabulary_size: 151936
+      context_length: 40960
+      tie_word_embeddings: false
+    source_url: https://huggingface.co/Qwen/Qwen3-32B
+  - model_id: Qwen/Qwen3-235B-A22B
+    revision: 8efa61729e24bd65b1d152b5ab5409052aa80e65
+    family: qwen3_moe
+    release_date: 2025-04-27
+    license: apache-2.0
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - coding
+      - reasoning
+    languages:
+      - en
+      - zh
+    architecture:
+      architecture_name: Qwen3MoeForCausalLM
+      total_parameters: 235093634560
+      active_parameters: 22000000000
+      layers: 94
+      hidden_size: 4096
+      intermediate_size: 12288
+      attention_heads: 64
+      kv_heads: 4
+      head_dimension: 128
+      vocabulary_size: 151936
+      context_length: 40960
+      tie_word_embeddings: false
+      moe_experts: 128
+      active_experts_per_token: 8
+    source_url: https://huggingface.co/Qwen/Qwen3-235B-A22B
+  - model_id: HuggingFaceTB/SmolLM2-1.7B-Instruct
+    revision: 31b70e2e869a7173562077fd711b654946d38674
+    family: llama
+    release_date: 2024-10-31
+    license: apache-2.0
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - coding
+      - reasoning
+      - tool-use
+    languages:
+      - en
+    architecture:
+      architecture_name: LlamaForCausalLM
+      total_parameters: 1711376384
+      layers: 24
+      hidden_size: 2048
+      intermediate_size: 8192
+      attention_heads: 32
+      kv_heads: 32
+      head_dimension: 64
+      vocabulary_size: 49152
+      context_length: 8192
+      tie_word_embeddings: true
+    source_url: https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct
+  - model_id: ibm-granite/granite-3.1-8b-instruct
+    revision: 4009206d5fc95d2e65a7b7633e159d6e97e25d35
+    family: granite
+    release_date: 2024-12-06
+    license: apache-2.0
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - coding
+      - tool-use
+    languages:
+      - en
+      - de
+      - es
+      - fr
+      - ja
+      - pt
+      - ar
+      - cs
+      - it
+      - ko
+      - nl
+      - zh
+    architecture:
+      architecture_name: GraniteForCausalLM
+      total_parameters: 8170848256
+      layers: 40
+      hidden_size: 4096
+      intermediate_size: 12800
+      attention_heads: 32
+      kv_heads: 8
+      head_dimension: 128
+      vocabulary_size: 49155
+      context_length: 131072
+      tie_word_embeddings: true
+    source_url: https://huggingface.co/ibm-granite/granite-3.1-8b-instruct
+  - model_id: allenai/OLMo-2-1124-13B-Instruct
+    revision: 3a5c85baefbb1896a54d56fe2e76c0395627ddf4
+    family: olmo2
+    release_date: 2024-12-18
+    license: apache-2.0
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - reasoning
+    languages:
+      - en
+    architecture:
+      architecture_name: Olmo2ForCausalLM
+      total_parameters: 13716198400
+      layers: 40
+      hidden_size: 5120
+      intermediate_size: 13824
+      attention_heads: 40
+      kv_heads: 40
+      head_dimension: 128
+      vocabulary_size: 100352
+      context_length: 4096
+      tie_word_embeddings: false
+    source_url: https://huggingface.co/allenai/OLMo-2-1124-13B-Instruct
+  - model_id: mistralai/Mixtral-8x22B-Instruct-v0.1
+    revision: cc88a6cc19fbd17d9f1c0ee0b0d70a748dce698d
+    family: mixtral
+    release_date: 2024-04-16
+    license: apache-2.0
+    gated: false
+    capabilities:
+      - text-generation
+      - chat
+      - tool-use
+    languages:
+      - en
+      - es
+      - it
+      - de
+      - fr
+    architecture:
+      architecture_name: MixtralForCausalLM
+      total_parameters: 140630071296
+      active_parameters: 39000000000
+      layers: 56
+      hidden_size: 6144
+      intermediate_size: 16384
+      attention_heads: 48
+      kv_heads: 8
+      head_dimension: 128
+      vocabulary_size: 32768
+      context_length: 65536
+      tie_word_embeddings: false
+      moe_experts: 8
+      active_experts_per_token: 2
+    source_url: https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1
+artifacts:
+  - artifact_id: microsoft-phi-4-mini-instruct-bf16-safetensors
+    model_id: microsoft/Phi-4-mini-instruct
+    revision: cfbefacb99257ffa30c83adab238a50856ac3083
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 7672043520
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/microsoft/Phi-4-mini-instruct/blob/cfbefacb99257ffa30c83adab238a50856ac3083/model.safetensors.index.json
+  - artifact_id: mistralai-mistral-7b-instruct-v0-3-bf16-safetensors
+    model_id: mistralai/Mistral-7B-Instruct-v0.3
+    revision: c170c708c41dac9275d15a8fff4eca08d52bab71
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 14496047104
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3/blob/c170c708c41dac9275d15a8fff4eca08d52bab71/model.safetensors.index.json
+  - artifact_id: qwen3-8b-bf16-safetensors
+    model_id: Qwen/Qwen3-8B
+    revision: b968826d9c46dd6066d109eabc6255188de91218
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 16381470720
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/Qwen/Qwen3-8B/blob/b968826d9c46dd6066d109eabc6255188de91218/model.safetensors.index.json
+  - artifact_id: deepseek-ai-deepseek-r1-distill-qwen-14b-bf16-safetensors
+    model_id: deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+    revision: 1df8507178afcc1bef68cd8c393f61a886323761
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 29540067328
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B/blob/1df8507178afcc1bef68cd8c393f61a886323761/model.safetensors.index.json
+  - artifact_id: qwen3-30b-a3b-bf16-safetensors
+    model_id: Qwen/Qwen3-30B-A3B
+    revision: ad44e777bcd18fa416d9da3bd8f70d33ebb85d39
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 61064245248
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/Qwen/Qwen3-30B-A3B/blob/ad44e777bcd18fa416d9da3bd8f70d33ebb85d39/model.safetensors.index.json
+  - artifact_id: qwen3-32b-bf16-safetensors
+    model_id: Qwen/Qwen3-32B
+    revision: 9216db5781bf21249d130ec9da846c4624c16137
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 65524246528
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/Qwen/Qwen3-32B/blob/9216db5781bf21249d130ec9da846c4624c16137/model.safetensors.index.json
+  - artifact_id: qwen3-235b-a22b-bf16-safetensors
+    model_id: Qwen/Qwen3-235B-A22B
+    revision: 8efa61729e24bd65b1d152b5ab5409052aa80e65
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 470187269120
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/Qwen/Qwen3-235B-A22B/blob/8efa61729e24bd65b1d152b5ab5409052aa80e65/model.safetensors.index.json
+  - artifact_id: huggingfacetb-smollm2-1-7b-instruct-bf16-safetensors
+    model_id: HuggingFaceTB/SmolLM2-1.7B-Instruct
+    revision: 31b70e2e869a7173562077fd711b654946d38674
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 3422777952
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct/blob/31b70e2e869a7173562077fd711b654946d38674/model.safetensors
+  - artifact_id: ibm-granite-granite-3-1-8b-instruct-bf16-safetensors
+    model_id: ibm-granite/granite-3.1-8b-instruct
+    revision: 4009206d5fc95d2e65a7b7633e159d6e97e25d35
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 16341696512
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/ibm-granite/granite-3.1-8b-instruct/blob/4009206d5fc95d2e65a7b7633e159d6e97e25d35/model.safetensors.index.json
+  - artifact_id: allenai-olmo-2-1124-13b-instruct-bf16-safetensors
+    model_id: allenai/OLMo-2-1124-13B-Instruct
+    revision: 3a5c85baefbb1896a54d56fe2e76c0395627ddf4
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 27432396800
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/allenai/OLMo-2-1124-13B-Instruct/blob/3a5c85baefbb1896a54d56fe2e76c0395627ddf4/model.safetensors.index.json
+  - artifact_id: mistralai-mixtral-8x22b-instruct-v0-1-bf16-safetensors
+    model_id: mistralai/Mixtral-8x22B-Instruct-v0.1
+    revision: cc88a6cc19fbd17d9f1c0ee0b0d70a748dce698d
+    format: safetensors
+    weight_dtype: bf16
+    quantization: bf16
+    total_bytes: 281260142592
+    compatible_runtime_ids:
+      - vllm-laif
+    source_url: >-
+      https://huggingface.co/mistralai/Mixtral-8x22B-Instruct-v0.1/blob/cc88a6cc19fbd17d9f1c0ee0b0d70a748dce698d/model.safetensors.index.json

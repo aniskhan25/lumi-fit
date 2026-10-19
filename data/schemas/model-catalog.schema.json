@@ -1,0 +1,553 @@
+{
+  "$defs": {
+    "ArtifactFormat": {
+      "enum": [
+        "safetensors",
+        "gguf",
+        "awq",
+        "gptq",
+        "other"
+      ],
+      "title": "ArtifactFormat",
+      "type": "string"
+    },
+    "ArtifactRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "minLength": 1,
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "compatible_runtime_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Compatible Runtime Ids",
+          "type": "array"
+        },
+        "format": {
+          "$ref": "#/$defs/ArtifactFormat"
+        },
+        "kernel_requirements": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Kernel Requirements",
+          "type": "array"
+        },
+        "model_id": {
+          "pattern": "^.+/.+$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "quantization": {
+          "minLength": 1,
+          "title": "Quantization",
+          "type": "string"
+        },
+        "revision": {
+          "minLength": 1,
+          "title": "Revision",
+          "type": "string"
+        },
+        "shard_bytes": {
+          "default": [],
+          "items": {
+            "type": "integer"
+          },
+          "title": "Shard Bytes",
+          "type": "array"
+        },
+        "source_url": {
+          "minLength": 1,
+          "title": "Source Url",
+          "type": "string"
+        },
+        "total_bytes": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Bytes"
+        },
+        "weight_dtype": {
+          "$ref": "#/$defs/WeightDtype"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "model_id",
+        "revision",
+        "format",
+        "weight_dtype",
+        "quantization",
+        "compatible_runtime_ids",
+        "source_url"
+      ],
+      "title": "ArtifactRecord",
+      "type": "object"
+    },
+    "CatalogMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "last_verified_at": {
+          "format": "date-time",
+          "title": "Last Verified At",
+          "type": "string"
+        },
+        "profile_version": {
+          "minLength": 1,
+          "title": "Profile Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "minItems": 1,
+          "title": "Sources",
+          "type": "array"
+        },
+        "valid_from": {
+          "format": "date",
+          "title": "Valid From",
+          "type": "string"
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Valid Until"
+        }
+      },
+      "required": [
+        "profile_version",
+        "valid_from",
+        "last_verified_at",
+        "sources"
+      ],
+      "title": "CatalogMetadata",
+      "type": "object"
+    },
+    "ModelCapability": {
+      "enum": [
+        "text-generation",
+        "chat",
+        "coding",
+        "reasoning",
+        "embedding",
+        "tool-use"
+      ],
+      "title": "ModelCapability",
+      "type": "string"
+    },
+    "ModelEvaluation": {
+      "additionalProperties": false,
+      "properties": {
+        "evaluated_at": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evaluated At"
+        },
+        "evaluation_id": {
+          "minLength": 1,
+          "title": "Evaluation Id",
+          "type": "string"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Score"
+        },
+        "score_maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Score Maximum"
+        },
+        "score_minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Score Minimum"
+        },
+        "source_url": {
+          "minLength": 1,
+          "title": "Source Url",
+          "type": "string"
+        },
+        "use_case": {
+          "minLength": 1,
+          "title": "Use Case",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evaluation_id",
+        "use_case",
+        "score",
+        "score_minimum",
+        "score_maximum",
+        "source_url"
+      ],
+      "title": "ModelEvaluation",
+      "type": "object"
+    },
+    "ModelRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "architecture": {
+          "$ref": "#/$defs/TransformerArchitecture"
+        },
+        "capabilities": {
+          "default": [
+            "text-generation"
+          ],
+          "items": {
+            "$ref": "#/$defs/ModelCapability"
+          },
+          "title": "Capabilities",
+          "type": "array"
+        },
+        "evaluations": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ModelEvaluation"
+          },
+          "title": "Evaluations",
+          "type": "array"
+        },
+        "family": {
+          "minLength": 1,
+          "title": "Family",
+          "type": "string"
+        },
+        "gated": {
+          "default": false,
+          "title": "Gated",
+          "type": "boolean"
+        },
+        "languages": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Languages",
+          "type": "array"
+        },
+        "license": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "License"
+        },
+        "model_id": {
+          "pattern": "^.+/.+$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "release_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Release Date"
+        },
+        "revision": {
+          "minLength": 1,
+          "title": "Revision",
+          "type": "string"
+        },
+        "source_url": {
+          "minLength": 1,
+          "title": "Source Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "model_id",
+        "revision",
+        "family",
+        "architecture",
+        "source_url"
+      ],
+      "title": "ModelRecord",
+      "type": "object"
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "SourceReference",
+      "type": "object"
+    },
+    "TransformerArchitecture": {
+      "additionalProperties": false,
+      "properties": {
+        "active_experts_per_token": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Active Experts Per Token"
+        },
+        "active_parameters": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Active Parameters"
+        },
+        "architecture_name": {
+          "minLength": 1,
+          "title": "Architecture Name",
+          "type": "string"
+        },
+        "attention_heads": {
+          "minimum": 1,
+          "title": "Attention Heads",
+          "type": "integer"
+        },
+        "context_length": {
+          "minimum": 1,
+          "title": "Context Length",
+          "type": "integer"
+        },
+        "head_dimension": {
+          "minimum": 1,
+          "title": "Head Dimension",
+          "type": "integer"
+        },
+        "hidden_size": {
+          "minimum": 1,
+          "title": "Hidden Size",
+          "type": "integer"
+        },
+        "intermediate_size": {
+          "minimum": 1,
+          "title": "Intermediate Size",
+          "type": "integer"
+        },
+        "kv_heads": {
+          "minimum": 1,
+          "title": "Kv Heads",
+          "type": "integer"
+        },
+        "layers": {
+          "minimum": 1,
+          "title": "Layers",
+          "type": "integer"
+        },
+        "moe_experts": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Moe Experts"
+        },
+        "tie_word_embeddings": {
+          "title": "Tie Word Embeddings",
+          "type": "boolean"
+        },
+        "total_parameters": {
+          "minimum": 1,
+          "title": "Total Parameters",
+          "type": "integer"
+        },
+        "vocabulary_size": {
+          "minimum": 1,
+          "title": "Vocabulary Size",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "architecture_name",
+        "total_parameters",
+        "layers",
+        "hidden_size",
+        "intermediate_size",
+        "attention_heads",
+        "kv_heads",
+        "head_dimension",
+        "vocabulary_size",
+        "context_length",
+        "tie_word_embeddings"
+      ],
+      "title": "TransformerArchitecture",
+      "type": "object"
+    },
+    "WeightDtype": {
+      "enum": [
+        "bf16",
+        "fp16",
+        "fp32",
+        "fp8",
+        "int8",
+        "int4",
+        "other"
+      ],
+      "title": "WeightDtype",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/ArtifactRecord"
+      },
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "kind": {
+      "const": "models",
+      "default": "models",
+      "title": "Kind",
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/CatalogMetadata"
+    },
+    "models": {
+      "items": {
+        "$ref": "#/$defs/ModelRecord"
+      },
+      "title": "Models",
+      "type": "array"
+    }
+  },
+  "required": [
+    "metadata",
+    "models",
+    "artifacts"
+  ],
+  "title": "ModelCatalog",
+  "type": "object"
+}

@@ -1,0 +1,297 @@
+{
+  "$defs": {
+    "ContainerIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "digest": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Digest"
+        },
+        "family": {
+          "minLength": 1,
+          "title": "Family",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "family",
+        "path"
+      ],
+      "title": "ContainerIdentity",
+      "type": "object"
+    },
+    "Duration": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/DurationUnit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "Duration",
+      "type": "object"
+    },
+    "DurationUnit": {
+      "enum": [
+        "seconds",
+        "minutes",
+        "hours",
+        "days"
+      ],
+      "title": "DurationUnit",
+      "type": "string"
+    },
+    "MemoryAmount": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "$ref": "#/$defs/MemoryUnit"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "title": "MemoryAmount",
+      "type": "object"
+    },
+    "MemoryUnit": {
+      "enum": [
+        "MB",
+        "GB",
+        "TB",
+        "MiB",
+        "GiB",
+        "TiB"
+      ],
+      "title": "MemoryUnit",
+      "type": "string"
+    },
+    "ReplicaRouting": {
+      "enum": [
+        "single",
+        "round-robin"
+      ],
+      "title": "ReplicaRouting",
+      "type": "string"
+    },
+    "RuntimeOptions": {
+      "additionalProperties": false,
+      "properties": {
+        "enable_prefix_caching": {
+          "default": false,
+          "title": "Enable Prefix Caching",
+          "type": "boolean"
+        },
+        "enforce_eager": {
+          "default": false,
+          "title": "Enforce Eager",
+          "type": "boolean"
+        },
+        "gpu_memory_utilization": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 1.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Gpu Memory Utilization"
+        },
+        "kv_cache_dtype": {
+          "minLength": 1,
+          "title": "Kv Cache Dtype",
+          "type": "string"
+        },
+        "max_batched_tokens": {
+          "minimum": 1,
+          "title": "Max Batched Tokens",
+          "type": "integer"
+        },
+        "max_concurrent_sequences": {
+          "minimum": 1,
+          "title": "Max Concurrent Sequences",
+          "type": "integer"
+        },
+        "max_model_length": {
+          "minimum": 1,
+          "title": "Max Model Length",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "max_model_length",
+        "max_concurrent_sequences",
+        "max_batched_tokens",
+        "gpu_memory_utilization",
+        "kv_cache_dtype"
+      ],
+      "title": "RuntimeOptions",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_id": {
+      "minLength": 1,
+      "title": "Artifact Id",
+      "type": "string"
+    },
+    "container": {
+      "$ref": "#/$defs/ContainerIdentity"
+    },
+    "cpu_cores_per_node": {
+      "minimum": 1,
+      "title": "Cpu Cores Per Node",
+      "type": "integer"
+    },
+    "cpu_memory_per_node": {
+      "$ref": "#/$defs/MemoryAmount"
+    },
+    "gcds_per_node": {
+      "minimum": 1,
+      "title": "Gcds Per Node",
+      "type": "integer"
+    },
+    "model_id": {
+      "pattern": "^.+/.+$",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "model_revision": {
+      "minLength": 1,
+      "title": "Model Revision",
+      "type": "string"
+    },
+    "nodes": {
+      "minimum": 1,
+      "title": "Nodes",
+      "type": "integer"
+    },
+    "partition": {
+      "minLength": 1,
+      "title": "Partition",
+      "type": "string"
+    },
+    "pipeline_parallel": {
+      "minimum": 1,
+      "title": "Pipeline Parallel",
+      "type": "integer"
+    },
+    "quantization": {
+      "minLength": 1,
+      "title": "Quantization",
+      "type": "string"
+    },
+    "ranks_per_node": {
+      "minimum": 1,
+      "title": "Ranks Per Node",
+      "type": "integer"
+    },
+    "replicas": {
+      "minimum": 1,
+      "title": "Replicas",
+      "type": "integer"
+    },
+    "request_routing": {
+      "$ref": "#/$defs/ReplicaRouting",
+      "default": "single"
+    },
+    "runtime_id": {
+      "minLength": 1,
+      "title": "Runtime Id",
+      "type": "string"
+    },
+    "runtime_options": {
+      "$ref": "#/$defs/RuntimeOptions"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "tensor_parallel": {
+      "minimum": 1,
+      "title": "Tensor Parallel",
+      "type": "integer"
+    },
+    "threads_per_rank": {
+      "minimum": 1,
+      "title": "Threads Per Rank",
+      "type": "integer"
+    },
+    "walltime": {
+      "$ref": "#/$defs/Duration"
+    }
+  },
+  "required": [
+    "model_id",
+    "model_revision",
+    "artifact_id",
+    "quantization",
+    "runtime_id",
+    "container",
+    "runtime_options",
+    "partition",
+    "nodes",
+    "gcds_per_node",
+    "cpu_cores_per_node",
+    "cpu_memory_per_node",
+    "tensor_parallel",
+    "pipeline_parallel",
+    "replicas",
+    "ranks_per_node",
+    "threads_per_rank",
+    "walltime"
+  ],
+  "title": "ServingPlan",
+  "type": "object"
+}
