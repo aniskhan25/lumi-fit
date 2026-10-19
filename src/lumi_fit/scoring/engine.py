@@ -305,59 +305,12 @@ def evaluate_lumi_vllm_fit(
     )
 
 
-def model_suitability_is_comparable(
-    candidates: tuple[CandidateResult, ...],
-    suitability_by_model: dict[str, ModelSuitabilityEvidence] | None,
-) -> bool:
-    """Return whether task-quality evidence is directly comparable across models."""
-
-    model_ids = {candidate.plan.model_id for candidate in candidates}
-    if len(model_ids) <= 1:
-        return True
-    if not suitability_by_model:
-        return False
-    evidence = [suitability_by_model.get(model_id) for model_id in sorted(model_ids)]
-    if any(item is None or item.score is None or not item.evidence_ids for item in evidence):
-        return False
-    evidence_ids = {item.evidence_ids for item in evidence if item is not None}
-    return len(evidence_ids) == 1
-
-
-def rescore_candidates(
-    *,
-    candidates: tuple[CandidateResult, ...],
-    serving: ServingRequirements,
-    catalogs: CatalogSet,
-    suitability_by_model: dict[str, ModelSuitabilityEvidence] | None = None,
-    exclude_model_suitability: bool = False,
-    goodput_by_plan: dict[str, SloGoodputEvidence] | None = None,
-) -> tuple[CandidateResult, ...]:
-    """Attach non-composite LUMI-vLLM fit results to candidates."""
-
-    del catalogs
-    enriched: list[CandidateResult] = []
-    for candidate in candidates:
-        suitability = None
-        if not exclude_model_suitability:
-            suitability = (suitability_by_model or {}).get(candidate.plan.model_id)
-        fit = evaluate_lumi_vllm_fit(
-            candidate=candidate,
-            serving=serving,
-            suitability=suitability,
-            evidence=(goodput_by_plan or {}).get(candidate.plan_id),
-        )
-        analysis = candidate.analysis.model_copy(update={"scores": (), "composite_score": None})
-        enriched.append(candidate.model_copy(update={"analysis": analysis, "lumi_vllm_fit": fit}))
-    return tuple(enriched)
-
-
 def enrich_candidates(
     *,
     candidates: tuple[CandidateResult, ...],
     serving: ServingRequirements,
     catalogs: CatalogSet,
     suitability_by_model: dict[str, ModelSuitabilityEvidence] | None = None,
-    exclude_model_suitability: bool = False,
     goodput_by_plan: dict[str, SloGoodputEvidence] | None = None,
 ) -> tuple[CandidateResult, ...]:
     """Attach analytical raw capacity and evidence-backed fit when available."""
@@ -376,25 +329,16 @@ def enrich_candidates(
         )
         analysis = candidate.analysis.model_copy(update={"performance": performance})
         with_performance.append(candidate.model_copy(update={"analysis": analysis}))
-    return rescore_candidates(
-        candidates=tuple(with_performance),
-        serving=serving,
-        catalogs=catalogs,
-        suitability_by_model=suitability_by_model,
-        exclude_model_suitability=exclude_model_suitability,
-        goodput_by_plan=goodput_by_plan,
-    )
-
-
-def serving_targets_satisfied(
-    candidate: CandidateResult,
-    serving: ServingRequirements,
-) -> bool:
-    """Only an evidence-backed score of 100 establishes full target satisfaction."""
-
-    del serving
-    fit = candidate.lumi_vllm_fit
-    return fit is not None and fit.fit_score == Decimal(100)
+    enriched: list[CandidateResult] = []
+    for candidate in with_performance:
+        fit = evaluate_lumi_vllm_fit(
+            candidate=candidate,
+            serving=serving,
+            suitability=(suitability_by_model or {}).get(candidate.plan.model_id),
+            evidence=(goodput_by_plan or {}).get(candidate.plan_id),
+        )
+        enriched.append(candidate.model_copy(update={"lumi_vllm_fit": fit}))
+    return tuple(enriched)
 
 
 def rank_candidates(
@@ -412,7 +356,6 @@ def rank_candidates(
     eligibility_order = {
         FitEligibilityStatus.ELIGIBLE: 0,
         FitEligibilityStatus.UNKNOWN: 1,
-        FitEligibilityStatus.UNSCORED: 1,
         FitEligibilityStatus.INELIGIBLE: 2,
     }
     quality_order = {

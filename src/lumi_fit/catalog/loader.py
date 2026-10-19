@@ -13,7 +13,6 @@ from lumi_fit.domain.catalogs import (
     HardwareProfile,
     PartitionCatalog,
     RuntimeCatalog,
-    ScoringCatalog,
 )
 from lumi_fit.domain.models import ModelCatalog, ModelCoverageTargets
 from lumi_fit.domain.requests import ModelSelector, ResourceEnvelope, ServingRequirements
@@ -48,10 +47,6 @@ def load_billing(path: str | Path) -> BillingCatalog:
 
 def load_runtime(path: str | Path) -> RuntimeCatalog:
     return load_contract(path, RuntimeCatalog)
-
-
-def load_scoring(path: str | Path) -> ScoringCatalog:
-    return load_contract(path, ScoringCatalog)
 
 
 def load_models(path: str | Path) -> ModelCatalog:

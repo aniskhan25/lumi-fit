@@ -18,5 +18,3 @@ allowed_runtimes:
 allowed_quantizations:
   - bf16
   - fp16
-objective: interactive
-

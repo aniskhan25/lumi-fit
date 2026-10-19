@@ -32,7 +32,6 @@ from lumi_fit.domain.models import ModelCapability
 from lumi_fit.domain.requests import (
     LatencyTargets,
     ModelSelector,
-    ObjectiveProfile,
     ResourceEnvelope,
     ServingMode,
     ServingRequirements,
@@ -108,7 +107,6 @@ def _default_serving() -> ServingRequirements:
         service_duration=Duration.model_validate("8 hours"),
         latency_targets=LatencyTargets(),
         throughput_targets=ThroughputTargets(),
-        objective=ObjectiveProfile.BALANCED,
     )
 
 
@@ -520,7 +518,6 @@ class DashboardState:
             minimum_hbm_headroom_fraction=self.serving.minimum_hbm_headroom_fraction,
             allowed_runtimes=self.serving.allowed_runtimes,
             allowed_quantizations=self.serving.allowed_quantizations,
-            objective=self.serving.objective,
         )
         bundle = self._resource_first(self.catalogs, resources, serving)
         self.resources, self.serving, self.bundle = resources, serving, bundle

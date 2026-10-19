@@ -10,7 +10,6 @@ from lumi_fit.domain.catalogs import (
     HardwareProfile,
     PartitionCatalog,
     RuntimeCatalog,
-    ScoringCatalog,
 )
 from lumi_fit.domain.models import ModelCatalog, ModelCoverageReport, ModelCoverageTargets
 from lumi_fit.domain.plans import ServingPlan
@@ -18,8 +17,6 @@ from lumi_fit.domain.requests import ModelSelector, ResourceEnvelope, ServingReq
 from lumi_fit.domain.results import (
     CapacityEnvelope,
     LumiVllmFitAnalysis,
-    ObjectiveSensitivity,
-    PlanComparison,
     RecommendationBundle,
     SloGoodputEvidence,
 )
@@ -30,15 +27,12 @@ SCHEMAS = {
     "hardware-profile.schema.json": HardwareProfile,
     "lumi-vllm-fit-analysis.schema.json": LumiVllmFitAnalysis,
     "model-selector.schema.json": ModelSelector,
-    "objective-sensitivity.schema.json": ObjectiveSensitivity,
-    "plan-comparison.schema.json": PlanComparison,
     "model-catalog.schema.json": ModelCatalog,
     "model-coverage-report.schema.json": ModelCoverageReport,
     "model-coverage-targets.schema.json": ModelCoverageTargets,
     "partition-catalog.schema.json": PartitionCatalog,
     "resource-envelope.schema.json": ResourceEnvelope,
     "runtime-catalog.schema.json": RuntimeCatalog,
-    "scoring-catalog.schema.json": ScoringCatalog,
     "serving-requirements.schema.json": ServingRequirements,
     "serving-plan.schema.json": ServingPlan,
     "slo-goodput-evidence.schema.json": SloGoodputEvidence,

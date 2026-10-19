@@ -335,7 +335,6 @@ def build_model_first_bundle(
         billing=catalogs.billing.metadata.profile_version,
         runtimes=catalogs.runtimes.metadata.profile_version,
         models=catalogs.models.metadata.profile_version,
-        scoring=catalogs.scoring.metadata.profile_version,
     )
     fingerprint_input = {
         "tool_version": __version__,
@@ -354,14 +353,11 @@ def build_model_first_bundle(
         model_selector=model_selector,
         catalog_versions=versions,
         candidates=candidates,
-        objective_sensitivity=(),
-        comparisons=(),
         search_complete=True,
         search_notes=(
             "The planner enumerates power-of-two tensor parallelism with one replica.",
             "Capacity envelopes use bounded memory-safe searches.",
             "Performance capacity remains unknown without comparable evidence.",
-            "Task quality and LUMI-vLLM fit are separate facts; no weighted composite is used.",
             "Numeric fit requires an exact workload, SLO, demand, and measured goodput LCB.",
         ),
     )

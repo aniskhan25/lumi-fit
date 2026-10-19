@@ -33,8 +33,6 @@ from lumi_fit.presentation import (
     filter_and_sort_candidates,
     format_bundle_table,
     format_candidates_csv,
-    format_comparison_details,
-    format_comparison_summary,
     format_plan_explanation,
 )
 
@@ -50,7 +48,7 @@ def _add_output(parser: argparse.ArgumentParser) -> None:
         help="Save JSON evidence, or displayed rows when --format csv is used",
     )
     parser.add_argument("--format", choices=("table", "json", "csv"), default="table")
-    parser.add_argument("--view", choices=("compact", "detail", "compare"), default="compact")
+    parser.add_argument("--view", choices=("compact", "detail"), default="compact")
     parser.add_argument("--all-plans", action="store_true", help="Include alternative layouts")
     parser.add_argument(
         "--sort",
@@ -199,12 +197,6 @@ def _emit_bundle(bundle: RecommendationBundle, args: argparse.Namespace) -> None
         if args.view == "detail":
             for candidate in candidates:
                 print("\n" + format_plan_explanation(bundle, candidate.plan_id))
-        elif args.view == "compare":
-            print("\n" + format_comparison_details(bundle))
-        else:
-            comparison = format_comparison_summary(bundle)
-            if comparison:
-                print("\n" + comparison)
 
 
 def _selector_from_args(

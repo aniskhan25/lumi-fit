@@ -95,17 +95,6 @@
       "title": "LatencyTargets",
       "type": "object"
     },
-    "ObjectiveProfile": {
-      "enum": [
-        "balanced",
-        "interactive",
-        "throughput",
-        "budget",
-        "quality-first"
-      ],
-      "title": "ObjectiveProfile",
-      "type": "string"
-    },
     "ServingMode": {
       "enum": [
         "online",
@@ -365,10 +354,6 @@
     },
     "mode": {
       "$ref": "#/$defs/ServingMode"
-    },
-    "objective": {
-      "$ref": "#/$defs/ObjectiveProfile",
-      "default": "balanced"
     },
     "request_arrival_rate_per_second": {
       "anyOf": [

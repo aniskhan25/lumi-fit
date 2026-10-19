@@ -59,11 +59,3 @@ lumi-fit explain recommendation.json --plan <plan-id>
 ```
 
 Run `lumi-fit --help` for all commands, filters, and export formats.
-
-## Development
-
-```bash
-python -m pip install -e '.[dev]'
-ruff check src tests
-pytest
-```

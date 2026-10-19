@@ -5,7 +5,6 @@ from .catalogs import (
     HardwareProfile,
     PartitionCatalog,
     RuntimeCatalog,
-    ScoringCatalog,
 )
 from .models import ArtifactRecord, ModelCatalog, ModelRecord
 from .plans import ServingPlan
@@ -26,7 +25,6 @@ __all__ = [
     "PartitionCatalog",
     "ResourceEnvelope",
     "RuntimeCatalog",
-    "ScoringCatalog",
     "ServingRequirements",
     "ServingPlan",
     "RecommendationBundle",

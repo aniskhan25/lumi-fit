@@ -12,7 +12,6 @@ from lumi_fit.domain.catalogs import (
     HardwareProfile,
     PartitionCatalog,
     RuntimeCatalog,
-    ScoringCatalog,
 )
 from lumi_fit.domain.models import ModelCatalog, ModelCoverageTargets
 
@@ -24,7 +23,6 @@ from .loader import (
     load_models,
     load_partitions,
     load_runtime,
-    load_scoring,
 )
 
 
@@ -34,7 +32,6 @@ class CatalogSet:
     partitions: PartitionCatalog
     billing: BillingCatalog
     runtimes: RuntimeCatalog
-    scoring: ScoringCatalog
     models: ModelCatalog
     model_coverage: ModelCoverageTargets
 
@@ -52,7 +49,6 @@ def load_default_catalogs(repository_root: str | Path) -> CatalogSet:
         partitions=load_partitions(data_root / "partitions/lumi.yaml"),
         billing=load_billing(data_root / "billing/lumi.yaml"),
         runtimes=load_runtime(data_root / "runtimes/vllm-lumi.yaml"),
-        scoring=load_scoring(data_root / "scoring/defaults.yaml"),
         models=load_models(data_root / "models/initial.yaml"),
         model_coverage=load_model_coverage(data_root / "models/coverage.yaml"),
     )

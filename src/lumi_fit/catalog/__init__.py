@@ -6,7 +6,6 @@ from .loader import (
     load_models,
     load_partitions,
     load_runtime,
-    load_scoring,
 )
 from .validation import CatalogSet, assert_valid_catalogs, load_default_catalogs
 
@@ -16,7 +15,6 @@ __all__ = [
     "load_models",
     "load_partitions",
     "load_runtime",
-    "load_scoring",
     "CatalogSet",
     "assert_valid_catalogs",
     "load_default_catalogs",

@@ -10,3 +10,4 @@ dist/
 
 # Private local design and development notes.
 docs/
+tests/

@@ -454,7 +454,6 @@ def build_resource_first_bundle(
         billing=catalogs.billing.metadata.profile_version,
         runtimes=catalogs.runtimes.metadata.profile_version,
         models=catalogs.models.metadata.profile_version,
-        scoring=catalogs.scoring.metadata.profile_version,
     )
     candidates_with_capacity = attach_capacity_envelopes(
         candidates=tuple(all_candidates),
@@ -480,8 +479,6 @@ def build_resource_first_bundle(
         catalog_versions=versions,
         candidates=candidates_with_capacity,
         model_groups=tuple(groups),
-        objective_sensitivity=(),
-        comparisons=(),
         search_complete=True,
         search_notes=(
             "The planner searches tensor-parallel and replica layouts inside a fixed allocation.",
@@ -490,7 +487,6 @@ def build_resource_first_bundle(
             "Task-quality scores remain null unless comparable evaluation evidence exists.",
             "Capacity envelopes use bounded memory-safe searches.",
             "Performance capacity remains unknown without comparable evidence.",
-            "Task quality and LUMI-vLLM fit are separate facts; no weighted composite is used.",
             "Numeric fit requires an exact workload, SLO, demand, and measured goodput LCB.",
         ),
     )

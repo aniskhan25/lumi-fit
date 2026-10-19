@@ -413,11 +413,6 @@
           "minLength": 1,
           "title": "Runtimes",
           "type": "string"
-        },
-        "scoring": {
-          "minLength": 1,
-          "title": "Scoring",
-          "type": "string"
         }
       },
       "required": [
@@ -425,8 +420,7 @@
         "partitions",
         "billing",
         "runtimes",
-        "models",
-        "scoring"
+        "models"
       ],
       "title": "CatalogVersions",
       "type": "object"
@@ -753,8 +747,7 @@
       "enum": [
         "eligible",
         "ineligible",
-        "unknown",
-        "unscored"
+        "unknown"
       ],
       "title": "FitEligibilityStatus",
       "type": "string"
@@ -1389,164 +1382,6 @@
       "title": "ModelSuitabilityEvidence",
       "type": "object"
     },
-    "ObjectivePlanRank": {
-      "additionalProperties": false,
-      "properties": {
-        "component_contributions": {
-          "additionalProperties": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-                "type": "string"
-              }
-            ]
-          },
-          "title": "Component Contributions",
-          "type": "object"
-        },
-        "component_weights": {
-          "additionalProperties": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-                "type": "string"
-              }
-            ]
-          },
-          "title": "Component Weights",
-          "type": "object"
-        },
-        "composite_score": {
-          "anyOf": [
-            {
-              "maximum": 100.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            }
-          ],
-          "title": "Composite Score"
-        },
-        "model_id": {
-          "pattern": "^.+/.+$",
-          "title": "Model Id",
-          "type": "string"
-        },
-        "plan_id": {
-          "minLength": 1,
-          "title": "Plan Id",
-          "type": "string"
-        },
-        "rank": {
-          "minimum": 1,
-          "title": "Rank",
-          "type": "integer"
-        },
-        "rank_change_from_requested": {
-          "default": 0,
-          "title": "Rank Change From Requested",
-          "type": "integer"
-        },
-        "serving_targets_satisfied": {
-          "title": "Serving Targets Satisfied",
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "rank",
-        "plan_id",
-        "model_id",
-        "composite_score",
-        "serving_targets_satisfied",
-        "component_weights",
-        "component_contributions"
-      ],
-      "title": "ObjectivePlanRank",
-      "type": "object"
-    },
-    "ObjectiveProfile": {
-      "enum": [
-        "balanced",
-        "interactive",
-        "throughput",
-        "budget",
-        "quality-first"
-      ],
-      "title": "ObjectiveProfile",
-      "type": "string"
-    },
-    "ObjectiveSensitivity": {
-      "additionalProperties": false,
-      "properties": {
-        "feasible_candidate_count": {
-          "minimum": 0,
-          "title": "Feasible Candidate Count",
-          "type": "integer"
-        },
-        "objective": {
-          "$ref": "#/$defs/ObjectiveProfile"
-        },
-        "rank_stable_after_excluding_unavailable_components": {
-          "title": "Rank Stable After Excluding Unavailable Components",
-          "type": "boolean"
-        },
-        "rankings": {
-          "default": [],
-          "items": {
-            "$ref": "#/$defs/ObjectivePlanRank"
-          },
-          "title": "Rankings",
-          "type": "array"
-        },
-        "unavailable_components": {
-          "default": [],
-          "items": {
-            "type": "string"
-          },
-          "title": "Unavailable Components",
-          "type": "array"
-        },
-        "unavailable_components_excluded": {
-          "title": "Unavailable Components Excluded",
-          "type": "boolean"
-        },
-        "winner_changed_from_requested": {
-          "title": "Winner Changed From Requested",
-          "type": "boolean"
-        },
-        "winner_plan_id": {
-          "anyOf": [
-            {
-              "minLength": 1,
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Winner Plan Id"
-        }
-      },
-      "required": [
-        "objective",
-        "winner_changed_from_requested",
-        "feasible_candidate_count",
-        "unavailable_components_excluded",
-        "rank_stable_after_excluding_unavailable_components"
-      ],
-      "title": "ObjectiveSensitivity",
-      "type": "object"
-    },
     "PerformanceAnalysis": {
       "additionalProperties": false,
       "properties": {
@@ -1620,24 +1455,6 @@
           ],
           "default": null
         },
-        "composite_score": {
-          "anyOf": [
-            {
-              "maximum": 100.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Composite Score"
-        },
         "constraints": {
           "items": {
             "$ref": "#/$defs/ConstraintResult"
@@ -1683,14 +1500,6 @@
             }
           ],
           "default": null
-        },
-        "scores": {
-          "default": [],
-          "items": {
-            "$ref": "#/$defs/ScoreComponent"
-          },
-          "title": "Scores",
-          "type": "array"
         }
       },
       "required": [
@@ -1699,183 +1508,6 @@
         "overall_confidence"
       ],
       "title": "PlanAnalysis",
-      "type": "object"
-    },
-    "PlanComparison": {
-      "additionalProperties": false,
-      "properties": {
-        "compared_feasibility": {
-          "$ref": "#/$defs/FeasibilityStatus"
-        },
-        "compared_model_id": {
-          "pattern": "^.+/.+$",
-          "title": "Compared Model Id",
-          "type": "string"
-        },
-        "compared_plan_id": {
-          "minLength": 1,
-          "title": "Compared Plan Id",
-          "type": "string"
-        },
-        "compared_rank": {
-          "minimum": 2,
-          "title": "Compared Rank",
-          "type": "integer"
-        },
-        "compared_targets_satisfied": {
-          "title": "Compared Targets Satisfied",
-          "type": "boolean"
-        },
-        "component_deltas": {
-          "items": {
-            "$ref": "#/$defs/ScoreComponentDelta"
-          },
-          "title": "Component Deltas",
-          "type": "array"
-        },
-        "decisive_component_id": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Decisive Component Id"
-        },
-        "decisive_explanation": {
-          "minLength": 1,
-          "title": "Decisive Explanation",
-          "type": "string"
-        },
-        "decisive_factor": {
-          "enum": [
-            "feasibility",
-            "serving-targets",
-            "composite-score",
-            "confidence",
-            "billing",
-            "stable-plan-id"
-          ],
-          "title": "Decisive Factor",
-          "type": "string"
-        },
-        "gpu_hours_delta": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Gpu Hours Delta"
-        },
-        "hbm_headroom_delta_fraction": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Hbm Headroom Delta Fraction"
-        },
-        "memory_safe_concurrency_delta": {
-          "anyOf": [
-            {
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Memory Safe Concurrency Delta"
-        },
-        "objective": {
-          "$ref": "#/$defs/ObjectiveProfile"
-        },
-        "quality_comparable": {
-          "title": "Quality Comparable",
-          "type": "boolean"
-        },
-        "quality_explanation": {
-          "minLength": 1,
-          "title": "Quality Explanation",
-          "type": "string"
-        },
-        "runtime_compatibility_delta": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Runtime Compatibility Delta"
-        },
-        "winner_feasibility": {
-          "$ref": "#/$defs/FeasibilityStatus"
-        },
-        "winner_model_id": {
-          "pattern": "^.+/.+$",
-          "title": "Winner Model Id",
-          "type": "string"
-        },
-        "winner_plan_id": {
-          "minLength": 1,
-          "title": "Winner Plan Id",
-          "type": "string"
-        },
-        "winner_rank": {
-          "minimum": 1,
-          "title": "Winner Rank",
-          "type": "integer"
-        },
-        "winner_targets_satisfied": {
-          "title": "Winner Targets Satisfied",
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "objective",
-        "winner_plan_id",
-        "compared_plan_id",
-        "winner_rank",
-        "compared_rank",
-        "winner_model_id",
-        "compared_model_id",
-        "winner_feasibility",
-        "compared_feasibility",
-        "winner_targets_satisfied",
-        "compared_targets_satisfied",
-        "component_deltas",
-        "quality_comparable",
-        "quality_explanation",
-        "decisive_factor",
-        "decisive_explanation"
-      ],
-      "title": "PlanComparison",
       "type": "object"
     },
     "QualityRequirementStatus": {
@@ -2053,221 +1685,6 @@
         "kv_cache_dtype"
       ],
       "title": "RuntimeOptions",
-      "type": "object"
-    },
-    "ScoreComponent": {
-      "additionalProperties": false,
-      "properties": {
-        "component_id": {
-          "minLength": 1,
-          "title": "Component Id",
-          "type": "string"
-        },
-        "confidence": {
-          "$ref": "#/$defs/ConfidenceClass"
-        },
-        "evidence_ids": {
-          "default": [],
-          "items": {
-            "type": "string"
-          },
-          "title": "Evidence Ids",
-          "type": "array"
-        },
-        "explanation": {
-          "minLength": 1,
-          "title": "Explanation",
-          "type": "string"
-        },
-        "formula_id": {
-          "default": "score.unspecified",
-          "minLength": 1,
-          "title": "Formula Id",
-          "type": "string"
-        },
-        "raw_inputs": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "title": "Raw Inputs",
-          "type": "object"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "maximum": 100.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Value"
-        },
-        "weight": {
-          "anyOf": [
-            {
-              "maximum": 1.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            }
-          ],
-          "title": "Weight"
-        },
-        "weighted_contribution": {
-          "anyOf": [
-            {
-              "maximum": 100.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            }
-          ],
-          "title": "Weighted Contribution"
-        }
-      },
-      "required": [
-        "component_id",
-        "weight",
-        "weighted_contribution",
-        "explanation",
-        "confidence"
-      ],
-      "title": "ScoreComponent",
-      "type": "object"
-    },
-    "ScoreComponentDelta": {
-      "additionalProperties": false,
-      "properties": {
-        "comparable": {
-          "title": "Comparable",
-          "type": "boolean"
-        },
-        "compared_contribution": {
-          "anyOf": [
-            {
-              "maximum": 100.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            }
-          ],
-          "title": "Compared Contribution"
-        },
-        "compared_value": {
-          "anyOf": [
-            {
-              "maximum": 100.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Compared Value"
-        },
-        "component_id": {
-          "minLength": 1,
-          "title": "Component Id",
-          "type": "string"
-        },
-        "contribution_delta": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            }
-          ],
-          "title": "Contribution Delta"
-        },
-        "explanation": {
-          "minLength": 1,
-          "title": "Explanation",
-          "type": "string"
-        },
-        "value_delta": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Value Delta"
-        },
-        "winner_contribution": {
-          "anyOf": [
-            {
-              "maximum": 100.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            }
-          ],
-          "title": "Winner Contribution"
-        },
-        "winner_value": {
-          "anyOf": [
-            {
-              "maximum": 100.0,
-              "minimum": 0.0,
-              "type": "number"
-            },
-            {
-              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Winner Value"
-        }
-      },
-      "required": [
-        "component_id",
-        "winner_contribution",
-        "compared_contribution",
-        "contribution_delta",
-        "comparable",
-        "explanation"
-      ],
-      "title": "ScoreComponentDelta",
       "type": "object"
     },
     "ServingMode": {
@@ -2542,10 +1959,6 @@
         "mode": {
           "$ref": "#/$defs/ServingMode"
         },
-        "objective": {
-          "$ref": "#/$defs/ObjectiveProfile",
-          "default": "balanced"
-        },
         "request_arrival_rate_per_second": {
           "anyOf": [
             {
@@ -2754,14 +2167,6 @@
     "catalog_versions": {
       "$ref": "#/$defs/CatalogVersions"
     },
-    "comparisons": {
-      "default": [],
-      "items": {
-        "$ref": "#/$defs/PlanComparison"
-      },
-      "title": "Comparisons",
-      "type": "array"
-    },
     "extensions": {
       "additionalProperties": true,
       "title": "Extensions",
@@ -2782,14 +2187,6 @@
     },
     "model_selector": {
       "$ref": "#/$defs/ModelSelector"
-    },
-    "objective_sensitivity": {
-      "default": [],
-      "items": {
-        "$ref": "#/$defs/ObjectiveSensitivity"
-      },
-      "title": "Objective Sensitivity",
-      "type": "array"
     },
     "resources": {
       "$ref": "#/$defs/ResourceEnvelope"

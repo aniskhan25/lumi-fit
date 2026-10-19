@@ -27,14 +27,6 @@ class UseCase(StrEnum):
     CUSTOM = "custom"
 
 
-class ObjectiveProfile(StrEnum):
-    BALANCED = "balanced"
-    INTERACTIVE = "interactive"
-    THROUGHPUT = "throughput"
-    BUDGET = "budget"
-    QUALITY_FIRST = "quality-first"
-
-
 class LatencyTargets(ContractModel):
     max_ttft_seconds: Decimal | None = Field(default=None, gt=0)
     max_itl_seconds: Decimal | None = Field(default=None, gt=0)
@@ -77,8 +69,6 @@ class ServingRequirements(ContractModel):
     minimum_hbm_headroom_fraction: Decimal = Field(default=Decimal("0.15"), ge=0, lt=1)
     allowed_runtimes: tuple[str, ...] = ("vllm",)
     allowed_quantizations: tuple[str, ...] = ("bf16", "fp16")
-    objective: ObjectiveProfile = ObjectiveProfile.BALANCED
-
     @model_validator(mode="before")
     @classmethod
     def default_token_length_distribution(cls, value: object) -> object:

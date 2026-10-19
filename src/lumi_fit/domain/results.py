@@ -13,7 +13,6 @@ from .base import ContractModel
 from .plans import ServingPlan
 from .requests import (
     ModelSelector,
-    ObjectiveProfile,
     ResourceEnvelope,
     ServingRequirements,
     TokenLengthPoint,
@@ -102,18 +101,6 @@ class BillingAnalysis(ContractModel):
     billing_rule_id: str = Field(min_length=1)
 
 
-class ScoreComponent(ContractModel):
-    component_id: str = Field(min_length=1)
-    value: Decimal | None = Field(default=None, ge=0, le=100)
-    weight: Decimal = Field(ge=0, le=1)
-    weighted_contribution: Decimal = Field(ge=0, le=100)
-    explanation: str = Field(min_length=1)
-    confidence: ConfidenceClass
-    formula_id: str = Field(default="score.unspecified", min_length=1)
-    evidence_ids: tuple[str, ...] = ()
-    raw_inputs: dict[str, str] = Field(default_factory=dict)
-
-
 class PlanAnalysis(ContractModel):
     feasibility: FeasibilityStatus
     fit_band: FitBand | None = None
@@ -121,8 +108,6 @@ class PlanAnalysis(ContractModel):
     memory: MemoryAnalysis | None = None
     performance: PerformanceAnalysis | None = None
     billing: BillingAnalysis | None = None
-    scores: tuple[ScoreComponent, ...] = ()
-    composite_score: Decimal | None = Field(default=None, ge=0, le=100)
     overall_confidence: ConfidenceClass
     assumptions: tuple[str, ...] = ()
 
@@ -143,8 +128,6 @@ class FitEligibilityStatus(StrEnum):
     ELIGIBLE = "eligible"
     INELIGIBLE = "ineligible"
     UNKNOWN = "unknown"
-    # Retained so bundles written before the status clarification still load.
-    UNSCORED = "unscored"
 
 
 class QualityRequirementStatus(StrEnum):
@@ -353,100 +336,6 @@ class CandidateResult(ContractModel):
     tiers: tuple[str, ...] = ()
 
 
-class ObjectivePlanRank(ContractModel):
-    rank: int = Field(ge=1)
-    plan_id: str = Field(min_length=1)
-    model_id: str = Field(pattern=r"^.+/.+$")
-    composite_score: Decimal = Field(ge=0, le=100)
-    serving_targets_satisfied: bool
-    component_weights: dict[str, Decimal]
-    component_contributions: dict[str, Decimal]
-    rank_change_from_requested: int = 0
-
-
-class ObjectiveSensitivity(ContractModel):
-    objective: ObjectiveProfile
-    winner_plan_id: str | None = Field(default=None, min_length=1)
-    winner_changed_from_requested: bool
-    feasible_candidate_count: int = Field(ge=0)
-    rankings: tuple[ObjectivePlanRank, ...] = ()
-    unavailable_components: tuple[str, ...] = ()
-    unavailable_components_excluded: bool
-    rank_stable_after_excluding_unavailable_components: bool
-
-    @model_validator(mode="after")
-    def validate_rankings(self) -> ObjectiveSensitivity:
-        expected = tuple(range(1, len(self.rankings) + 1))
-        actual = tuple(item.rank for item in self.rankings)
-        if actual != expected:
-            raise ValueError("objective sensitivity ranks must be contiguous")
-        if self.feasible_candidate_count != len(self.rankings):
-            raise ValueError("feasible candidate count must equal ranking count")
-        expected_winner = self.rankings[0].plan_id if self.rankings else None
-        if self.winner_plan_id != expected_winner:
-            raise ValueError("objective winner must be the rank-one plan")
-        return self
-
-
-class ScoreComponentDelta(ContractModel):
-    component_id: str = Field(min_length=1)
-    winner_value: Decimal | None = Field(default=None, ge=0, le=100)
-    compared_value: Decimal | None = Field(default=None, ge=0, le=100)
-    value_delta: Decimal | None = None
-    winner_contribution: Decimal = Field(ge=0, le=100)
-    compared_contribution: Decimal = Field(ge=0, le=100)
-    contribution_delta: Decimal
-    comparable: bool
-    explanation: str = Field(min_length=1)
-
-
-class PlanComparison(ContractModel):
-    objective: ObjectiveProfile
-    winner_plan_id: str = Field(min_length=1)
-    compared_plan_id: str = Field(min_length=1)
-    winner_rank: int = Field(ge=1)
-    compared_rank: int = Field(ge=2)
-    winner_model_id: str = Field(pattern=r"^.+/.+$")
-    compared_model_id: str = Field(pattern=r"^.+/.+$")
-    winner_feasibility: FeasibilityStatus
-    compared_feasibility: FeasibilityStatus
-    winner_targets_satisfied: bool
-    compared_targets_satisfied: bool
-    component_deltas: tuple[ScoreComponentDelta, ...]
-    hbm_headroom_delta_fraction: Decimal | None = None
-    memory_safe_concurrency_delta: int | None = None
-    gpu_hours_delta: Decimal | None = None
-    runtime_compatibility_delta: Decimal | None = None
-    quality_comparable: bool
-    quality_explanation: str = Field(min_length=1)
-    decisive_factor: Literal[
-        "feasibility",
-        "serving-targets",
-        "composite-score",
-        "confidence",
-        "billing",
-        "stable-plan-id",
-    ]
-    decisive_component_id: str | None = None
-    decisive_explanation: str = Field(min_length=1)
-
-    @model_validator(mode="after")
-    def validate_distinct_plans(self) -> PlanComparison:
-        if self.winner_plan_id == self.compared_plan_id:
-            raise ValueError("a comparison requires two distinct plans")
-        component_ids = [delta.component_id for delta in self.component_deltas]
-        if len(component_ids) != len(set(component_ids)):
-            raise ValueError("comparison component deltas must be unique")
-        if (
-            self.decisive_component_id is not None
-            and self.decisive_component_id not in component_ids
-        ):
-            raise ValueError("decisive component must be present in component deltas")
-        if self.decisive_factor != "composite-score" and self.decisive_component_id is not None:
-            raise ValueError("only a composite-score decision can name a component")
-        return self
-
-
 class ModelSuitabilityEvidence(ContractModel):
     use_case: UseCase
     score: Decimal | None = Field(default=None, ge=0, le=100)
@@ -489,7 +378,6 @@ class CatalogVersions(ContractModel):
     billing: str = Field(min_length=1)
     runtimes: str = Field(min_length=1)
     models: str = Field(min_length=1)
-    scoring: str = Field(min_length=1)
 
 
 class RecommendationBundle(ContractModel):
@@ -503,8 +391,6 @@ class RecommendationBundle(ContractModel):
     catalog_versions: CatalogVersions
     candidates: tuple[CandidateResult, ...]
     model_groups: tuple[ModelPlanGroup, ...] = ()
-    objective_sensitivity: tuple[ObjectiveSensitivity, ...] = ()
-    comparisons: tuple[PlanComparison, ...] = ()
     search_complete: bool
     search_notes: tuple[str, ...] = ()
     extensions: dict[str, Any] = Field(default_factory=dict)
@@ -535,41 +421,6 @@ class RecommendationBundle(ContractModel):
                     raise ValueError("capacity neighbor cannot reference its own plan")
                 if candidates_by_id[neighbor.plan_id].plan.model_id != candidate.plan.model_id:
                     raise ValueError("capacity neighbors must use the same model")
-        objectives = [item.objective for item in self.objective_sensitivity]
-        if len(objectives) != len(set(objectives)):
-            raise ValueError("objective sensitivity profiles must be unique")
-        if objectives and self.serving.objective not in objectives:
-            raise ValueError("objective sensitivity must include the requested objective")
-        ranked_sets: list[set[str]] = []
-        for sensitivity in self.objective_sensitivity:
-            ranked_ids = {item.plan_id for item in sensitivity.rankings}
-            if not ranked_ids <= candidate_ids:
-                raise ValueError("objective sensitivity references an unknown plan")
-            ranked_sets.append(ranked_ids)
-        if ranked_sets and any(plan_ids != ranked_sets[0] for plan_ids in ranked_sets[1:]):
-            raise ValueError("objective profiles must rank the same feasible plan set")
-        feasible_ids = {
-            candidate.plan_id
-            for candidate in self.candidates
-            if candidate.analysis.feasibility is FeasibilityStatus.FEASIBLE
-        }
-        if ranked_sets and ranked_sets[0] != feasible_ids:
-            raise ValueError("objective profiles must include every feasible plan")
-        for comparison in self.comparisons:
-            if {
-                comparison.winner_plan_id,
-                comparison.compared_plan_id,
-            } - candidate_ids:
-                raise ValueError("comparison references an unknown candidate plan")
-            winner = candidates_by_id[comparison.winner_plan_id]
-            compared = candidates_by_id[comparison.compared_plan_id]
-            if (
-                comparison.winner_model_id != winner.plan.model_id
-                or comparison.compared_model_id != compared.plan.model_id
-            ):
-                raise ValueError("comparison model IDs must match their plans")
-            if comparison.objective is not self.serving.objective:
-                raise ValueError("comparison must use the bundle's requested objective")
         for group in self.model_groups:
             referenced = {
                 plan_id
